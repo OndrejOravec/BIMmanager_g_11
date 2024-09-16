@@ -28,4 +28,4 @@
 
 ### 4. Our Role as Managers
 
-- **Script or Plan**: Our script 
+- **Script or Plan**: Our script is importing Ifcopenshell and running both the Architectural model and the MEP model. We use "#" to toggle each path on or off. Right now we
