@@ -1,10 +1,33 @@
 # BIMmanager_g_11
-1. Group 11
-2. Indoor environment
-3. We are managers for group 14 and 15 and their claims are
-   Group 14: DuctSegments
-   Group 15: Windows
-4. The claims have been found in:
-   Group 14: Number of AHU units should be 10 in total and 1 on each level. They check if there is 1 AHU on the level in the Ifc model. The claim is stated on page 8 in the report "CES_BLD_24_0_6_MEP"
-   Group 15: 
-4. We are managers and our script
+
+### 1. Group 11 - BIM Management Overview
+
+- **Focus:** Indoor Environment Management
+- **Role:** Managers for Group 14 and Group 15
+
+---
+
+### 2. Group Responsibilities
+
+- **Group 14:** DuctSegments
+- **Group 15:** Windows
+
+---
+
+### 3. Group 14 - Claim
+
+- **Claim:** There should be 10 AHU units in total, with 1 unit on each level. The group checks if there is exactly 1 AHU unit per level in the IFC model.
+- **Report Reference:** Claim stated on page 8 of the report "CES_BLD_24_0_6_MEP."
+
+---
+
+### 4. Group 15 - Claim
+
+- **Claim:** (Fill in details about the specific claim regarding windows.)
+- **Report Reference:** (Add details about where the claim is stated in the relevant report.)
+
+---
+
+### 5. Our Role as Managers
+
+- **Script or Plan**: (Here, you can describe how you manage or validate the claims using your script, or if you have a management workflow, note it here.)
