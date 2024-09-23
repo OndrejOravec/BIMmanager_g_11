@@ -25,7 +25,7 @@
 
   ### 3.2 Group 15 - Claim
   - **Claim:** 1509 windows in the architectural model.
-  - **Report Reference:** Accepted but not stated in reports.
+  - **Report Reference:** Claim cannot be found in a report, but was accepted.
 </details>
 
 ---
@@ -34,8 +34,7 @@
   <summary>4. Our Role as Managers</summary>
 
   - **Script or Plan:**  
-    Script imports **Ifcopenshell** and runs both Architectural and MEP models.  
-    Results:
+    Our script imports **Ifcopenshell** and runs both the Architectural model and the MEP model. We use "#" to toggle each path on or off. We run the results of their scripts so we aren't running the rules, but the part of the main script that counts number of AHU's and number of windows. After the script it is seen that there are:
     - **2 AHUs** in the MEP model.
     - **1509 windows** in the architectural model.
 </details>
