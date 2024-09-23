@@ -10,6 +10,7 @@ print("Imported ifcopenshell")
 
 from external.BIManalyst_g_15.rules import windowRule
 
+
 print("Loading model...")
 #MEP model:
 model = ifcopenshell.open("C:\\Users\\magnu\\OneDrive - Danmarks Tekniske Universitet\\DTU\\Kandidat\\Tredje semester\\41934 Advanced Building Information Modeling\\IFC_Models\\CES_BLD_24_06_MEP.IFC")
