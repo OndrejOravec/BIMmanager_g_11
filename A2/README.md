@@ -37,6 +37,18 @@
 <details>
   <summary>A2c. Use Case</summary>
 
+  ### Group 14 - Claim
+  - **How and when we check the claim?** 
+  - **What information does this claim rely on?**
+  - **What BIM purpose is required?**
+  - **BPMN drawing:** 
+
+  ### Group 15 - Claim
+  - **How and when we check the claim?** 
+  - **What information does this claim rely on?**
+  - **What BIM purpose is required?**
+  - **BPMN drawing:** 
+
   </details>
 
 ---
