@@ -43,15 +43,15 @@
   <summary>A2c. Use Case</summary>
 
   ### Group 14 - Claim
-  - **How and when we check the claim?** 
-  - **What information does this claim rely on?**
+  - **How and when we check this claim?** 
+  - **What information does this claim rely on?** #maybe just use reference on file and page as in previous chapter
   - **What BIM purpose is required?**
   - **BPMN drawing:** 
 
   ### Group 15 - Claim
-  - **How and when we check the claim?** 
-  - **What information does this claim rely on?**
-  - **What BIM purpose is required?**
+  - **How and when we check this claim?** 
+  - **What information does this claim rely on?** #maybe just use reference on file and page as in previous chapter
+  - **What BIM purpose is required?** #not sure what does this mean
   - **BPMN drawing:** 
 
   </details>
@@ -65,6 +65,10 @@
 ---
 <details>
   <summary>A2c. Use Case</summary>
+
+  - **Identify where a new script/fucntion/tool is needed and highlight this in BPMN diagram**
+
+
 
   </details>
 
