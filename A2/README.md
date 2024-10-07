@@ -85,7 +85,7 @@
 
 ---
 <details>
-  <summary>A2f. Information requeirements</summary>
+  <summary>A2f. Information requirements</summary>
  
   ### Group 14
  - **Identification of required information from model**
