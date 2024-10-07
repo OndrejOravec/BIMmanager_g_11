@@ -4,7 +4,7 @@
    How much do agree with this statement? : "I am confident coding in Python"
    
   ### Group 11 - Managers
-  - *Ondrej* : 1
+  - *Ondrej* : 2
   - *Magnus* : 3
 
   ###  Group 14 - Analysts
