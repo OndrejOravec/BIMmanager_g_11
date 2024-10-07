@@ -27,10 +27,15 @@
   ### Group 14 - Claim
   - **Claim:** 
   - **Report Reference:** "CES_BLD_24_0_6_MEP" (p. 8)
+  - **Description of claim we wish to check**
+  - **Justification of selection of our claim**
 
   ### Group 15 - Claim
   - **Claim:** 
   - **Report Reference:** 
+  - **Description of claim we wish to check**
+  - **Justification of selection of our claim**
+
 </details>
 
 ---
@@ -67,12 +72,22 @@
 <details>
   <summary>A2e. Tool Idea</summary>
 
+ ### Group 14
+  - **Describe idea of your OpenBIM ifcOpenShell Tool**
+  - **Business and Societal value:**
+  - **Summarizing BPMN diagram:**
+ ### Group 15
   </details>
 
 ---
 <details>
   <summary>A2f. Information requeirements</summary>
+ 
+  ### Group 14
+ - **Identification of required information from model**
 
+ ### Group 15
+  - **Identification of required information from model**
   </details>
 
 ---
