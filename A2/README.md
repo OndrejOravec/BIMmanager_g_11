@@ -58,17 +58,9 @@
 
 ---
 <details>
-  <summary>A2d. Scope the Case</summary>
-
-  </details>
-
----
-<details>
-  <summary>A2c. Use Case</summary>
+  <summary>A2d. Scope the Use Case</summary>
 
   - **Identify where a new script/fucntion/tool is needed and highlight this in BPMN diagram**
-
-
 
   </details>
 
