@@ -77,6 +77,10 @@
   - **Business and Societal value:**
   - **Summarizing BPMN diagram:**
  ### Group 15
+ - **Describe idea of your OpenBIM ifcOpenShell Tool**
+  - **Business and Societal value:**
+  - **Summarizing BPMN diagram:**
+  
   </details>
 
 ---
