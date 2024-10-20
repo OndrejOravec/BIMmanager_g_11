@@ -8,15 +8,15 @@
   - *Magnus* : 3
 
   ###  Group 14 - Analysts
-  - *Jannik* :
-  - *Mathushan* :
+  - *Jannik* : 1
+  - *Mathushan* : 2
 
   ###  Group 15 - Analysts
   - *Zohaib* : 1
   - *Mikael* : 2
 
 
- ### Total Score:
+ ### Total Score: 11
 
 </details>
   
@@ -25,10 +25,10 @@
   <summary>A2b. Identify claim</summary>
 
   ### Group 14 - Claim
-  - **Claim:** 
+  - **Claim:** The amount of technical installations and AHU-units used in the ventilation system, which aligns with the design and regulatory requirements.
   - **Report Reference:** "CES_BLD_24_0_6_MEP" (p. 8)
-  - **Description of claim we wish to check**
-  - **Justification of selection of our claim**
+  - **Description of claim we wish to check** We are verifying the claim that the ventilation system, including AHUs and technical installations (like ducts, pipes, etc.), complies with the building regulations and design-standards. This involves checking the amount of equipment, their dimensions, and the capacity of airflow too.
+  - **Justification of selection of our claim** Ventilation is essential for ensuring good air quality in the building, and any inconsistencies could impact occupant health or energy-efficiency.
 
   ### Group 15 - Claim
   - **Claim:** We wil try to find U-Value. The U-Value of a material or structure significantly impacts the amount of
@@ -49,10 +49,15 @@
   <summary>A2c. Use Case</summary>
 
   ### Group 14 - Claim
-  - **How and when we check this claim?** 
-  - **What information does this claim rely on?** #maybe just use reference on file and page as in previous chapter
-  - **What BIM purpose is required?**
-  - **BPMN drawing:** 
+  - **How and when we check this claim?** We check the claim by comparing the amount of ventilation components (e.g. AHU, pipes, etc.) found in the MEP IFC-model with those specified in the MEP-design report. This check will occur in the next assignment during the design validation phase and right before installation.
+  - **What information does this claim rely on?** The claim relies on the components of the ventilation in the BlenderBIM-model, their quantities and properties. This includes the AHUs, ducts and the flow rates supplied by mostly the MEP-report of the ventilation 
+  - **What BIM purpose is required?** The BIM purpose is ventilation and technical installations
+
+  - **BPMN drawing:**   
+  1. First we extract ventilation data from IFC Model
+  2. The we validate against MEP-report
+  3. Subsequently, we calculate ventilation needs
+  4. And finally, we generate validation report.
 
   ### Group 15 - Claim
   - **How and when we check this claim?** We will check the claim by creating a Python script within Blender to analyze the U-Value's impact on daylight performance in our building
@@ -70,7 +75,14 @@
 <details>
   <summary>A2d. Scope the Use Case</summary>
 
-  - **Identify where a new script/fucntion/tool is needed and highlight this in BPMN diagram**
+  - **Identify where a new script/fucntion/tool is needed and highlight this in BPMN diagram** 
+  ### Group 14 
+
+ 1. In first step a script or tool is required to systamize the extraction of ventilation components. This will access and list the required data from the model effectively.
+ 2. A function is needed here to compare the extracted data from the IFC-model with the MEP-report. The function would guarantee that quantities, dimensions and flow rates match the specifications for design and regulations.
+ 3. A sript would also include calculations for airflow based on the size of the room and the amount of occupants, which could be incorporated into the validation tool or done separately.
+
+
 
   </details>
 
@@ -78,15 +90,19 @@
 <details>
   <summary>A2e. Tool Idea</summary>
 
+
+
  ### Group 14
-  - **Describe idea of your OpenBIM ifcOpenShell Tool**  The idea behind our  OpenBIM ifcOpenShell Tool is to provide an open-source solution for working with  IFC in the BIM environment. It allows users to create, modify, and analyze IFC files without being tied to proprietary software. Our tool is designed to help professionals  by ensuring that BIM data can be shared and used across different platforms.
+  - **Describe idea of your OpenBIM ifcOpenShell Tool**   The tool will focus on extracting ventilation and technical installation data from the IFC-file, here including ducts, pipes, and AHUs, etc. It will also systemaize checks for regulatory compliance, perform calculations for required airflow per room, and them generate a report showing if the design meets its requirements.
+
+  - **Business and Societal value:** The tool ensures that the ventilation system meets the necessary standards, reducing the risk of bad indoor air quality and don't go against the regulations. This will lead to healthier building environments and reduce costs associated with design errors.
+
+  - **Summarizing BPMN diagram:**  The diagram shows the process from starting from extracting data to performing validation to then calculating ventilation requirements to finally generating the report.
+
+ ### Group 15
+ - **Describe idea of your OpenBIM ifcOpenShell Tool** The idea behind our  OpenBIM ifcOpenShell Tool is to provide an open-source solution for working with  IFC in the BIM environment. It allows users to create, modify, and analyze IFC files without being tied to proprietary software. Our tool is designed to help professionals  by ensuring that BIM data can be shared and used across different platforms.
   - **Business and Societal value:** Business Value: Cost savings, interoperability, process automation, and regulatory compliance.
  Societal Value: Promotes sustainability, knowledge sharing, and increases accessibility to BIM  tools for smaller firms and educational institutions.
-
-  - **Summarizing BPMN diagram:**
- ### Group 15
- - **Describe idea of your OpenBIM ifcOpenShell Tool**
-  - **Business and Societal value:**
   - **Summarizing BPMN diagram:**
   
   </details>
@@ -96,12 +112,18 @@
   <summary>A2f. Information requirements</summary>
  
   ### Group 14
- - **Identification of required information from model** To calculate the U-value of a window, you need to know the thermal conductivity of the materials (glass, frame, and gas between panes), the number of glass layers (single, double, or triple glazing), the thickness of the glass and gaps between panes, and the type of gas used in the cavity (e.g., air, argon).
- Additionally, the presence of Low-E coatings, the material of the window frame (wood, aluminum, PVC),
- and the type of spacer bars (e.g., aluminum or warm-edge) also affect the U-value. 
+ - **Identification of required information from model**  For ventilation, the required information is:
+ AHUs (IfcBuildingElementProxy)
+ Ducts and pipes (IfcFlowSegment)
+ Valves, dampers and other technical installations (IfcFlowController)
+ Relevant geometric and performance properties, including flow rates and capacities.
+
+
 
  ### Group 15
-  - **Identification of required information from model**
+  - **Identification of required information from model** To calculate the U-value of a window, you need to know the thermal conductivity of the materials (glass, frame, and gas between panes), the number of glass layers (single, double, or triple glazing), the thickness of the glass and gaps between panes, and the type of gas used in the cavity (e.g., air, argon).
+ Additionally, the presence of Low-E coatings, the material of the window frame (wood, aluminum, PVC),
+ and the type of spacer bars (e.g., aluminum or warm-edge) also affect the U-value. 
   </details>
 
 ---
