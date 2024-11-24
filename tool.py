@@ -2,6 +2,13 @@
 # This script analyzes floor surfaces in an IFC model, calculating reverberation times and visualizing results.
 # Key steps include loading an IFC file, identifying relevant surfaces, and performing various geometric and acoustic calculations.
 
+#Important - must run these commands before running the script
+"""
+pip install tqdm
+pip instal ifcopenshell
+
+"""
+
 import ifcopenshell
 import ifcopenshell.geom
 import math
@@ -12,6 +19,20 @@ import matplotlib.patches as mpatches  # For legend patches
 import pandas as pd  # To create and manage data tables
 from mpl_toolkits.mplot3d import Axes3D  # For 3D plotting
 import time
+from tqdm import tqdm
+from scipy.spatial import ConvexHull
+from matplotlib.patches import Polygon
+
+# Define the save directory
+save_directory = r"C:\Users\Magnus\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\Vizual\Floor_Plans"
+
+# Ensure the directory exists
+os.makedirs(save_directory, exist_ok=True)
+
+print(f"Save directory is set to: {save_directory}")
+
+
+
 # -------------------- Load the IFC Model --------------------
 # Specify the path to the IFC file (update the path if needed).
 print("WELCOME")
@@ -29,8 +50,45 @@ for i in range(5, 0, -1):  # Countdown from 5 to 1
     print(f"{i} seconds remaining...")
     time.sleep(1)  # Wait for 1 second
 print("Loading Architectural model...")
-file_path = r"C:\Users\magnu\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\IFC_Models\CES_BLD_24_06_ARC.IFC"
-ifc_model = ifcopenshell.open(file_path)  # Load the IFC model.
+# Simulated Loading Bar Function
+
+def load_ifc_with_progress(file_path):
+    """
+    Simulate a progress bar during IFC file loading and related tasks.
+
+    Parameters:
+    - file_path (str): Path to the IFC file.
+
+    Returns:
+    - ifc_model: The loaded IFC model.
+    """
+    total_steps = 100
+    progress = 0
+    with tqdm(total=total_steps, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt}%", colour="green") as pbar:
+        # Simulate pre-loading (cosmetic only)
+        for _ in range(30):
+            time.sleep(0.05)  # Fast cosmetic delay
+            pbar.update(1)
+            progress += 1
+
+        # Actual model loading (real time)
+        ifc_model = ifcopenshell.open(file_path)
+        pbar.update(50)  # Simulate jumping to 80% after loading
+        progress += 50
+
+        # Simulate post-loading tasks (e.g., processing geometry)
+        for _ in range(20):
+            time.sleep(0.05)  # Fast cosmetic delay
+            pbar.update(1)
+            progress += 1
+
+    print("Model successfully loaded and ready for analysis!")
+    return ifc_model
+
+# Example Usage
+file_path = r"C:\Users\Magnus\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\IFC_Models\CES_BLD_24_06_ARC.IFC"
+ifc_model = load_ifc_with_progress(file_path)
+
 
 # -------------------- Geometry Settings --------------------
 # Set global geometry processing options for creating and analyzing 3D shapes.
@@ -39,7 +97,6 @@ settings.set(settings.USE_WORLD_COORDS, True)  # Use world coordinates for all g
 
 # -------------------- Helper Functions --------------------
 # The following functions perform calculations for geometry, areas, distances, and classification.
-print("Calculating...")
 def reduction_factor(a, b, t=352):
     """
     Calculate the reduction factor for a rectangular shape. 
@@ -555,6 +612,7 @@ for result in results:
     else:
         print(f"    Reverberation Time: Cannot be calculated (average absorption coefficient is zero)")
   
+
 # -------------------- Visualization Section --------------------
 
 
