@@ -19,6 +19,9 @@ Before you begin, make sure you have Python installed on your machine. The scrip
 ```sh
 pip install tqdm
 pip install ifcopenshell
+pip install numpy
+pip install pandas
+pip install matplotlib
 ```
 
 These packages include:
