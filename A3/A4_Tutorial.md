@@ -2,6 +2,17 @@
 
 Welcome! This repository contains a tutorial for using the **IFC Surface Analysis and Reverberation Calculation** script, which performs acoustic and geometric analyses on floor surfaces in an IFC model, specifically focusing on medium-sized rooms like classrooms and offices. This script also generates visualizations of the results, helping you understand the acoustic properties of the modeled spaces. Let's walk through the process step-by-step.
 
+## Target audience
+This script is intended for both beginners and experienced coders, primarily for those seeking a quick overview of room acoustics. It is most useful during the design phase when different designs and room sizes are still being evaluated.
+
+
+
+
+## Complications and limitations
+The current version of the script is unable to accurately analyze rooms with non-rectangular shapes. This is an area for future improvement, though the script remains highly viable for analyzing rectangular rooms, which are common in office and classroom settings. Additionally, there are some limitations in precision, meaning the results should be considered as close estimates. For situations that require precise values, further detailed calculations may be necessary. The accuracy of the script can improve with IFC models that have strict boundaries in the design phase, as the script is currently unable to fully exclude certain objects, leading to the introduction of compensating adjustments throughout the script.
+
+
+
 ## Prerequisites
 Before you begin, make sure you have Python installed on your machine. The script also requires a few Python packages that need to be installed. You can do so by running the following commands in your terminal:
 
@@ -61,7 +72,7 @@ def load_ifc_with_progress(file_path):
 
 ### Analyze Geometry and Acoustic Properties
 The script then analyzes the geometry of the building, focusing on medium-sized floor slabs that meet the criteria of being suitable for classrooms or offices.
-- It filters out rooms that are too large or too small, or those that are not rectangular.
+- It filters out rooms that are too large or too small, or those that are not rectangular. The filters for this script has been chosen this way to target specifically classrooms and offices for the analysis as this is where most people will be located with acoustic needs.
 - It calculates the floor area, height, volume, and surrounding surface types (e.g., walls, beams, windows).
 - The script uses these details to estimate reverberation times based on Sabine's formula.
 
@@ -114,5 +125,5 @@ The script uses several helper functions to make the analysis easier:
   ```
 
 ## Conclusion
-This script is a powerful tool for performing acoustic analysis of IFC models, giving you insights into the reverberation characteristics of various rooms. With customization, you can adapt it for a wide range of building types and specific analyses. The provided visualizations help in better understanding the spatial and acoustic properties of your architectural model. Feel free to adjust and extend the script as needed for your projects.
+This script is a strong tool for performing acoustic analysis of IFC models, giving you insights into the reverberation characteristics of various rooms. Remember that calculations are estimates close to the correct value and not precise. With customization, you can adapt it for a wide range of building types and specific analyses. The provided visualizations help in better understanding the spatial and acoustic properties of your architectural model. Feel free to adjust and extend the script as needed for your projects.
 
