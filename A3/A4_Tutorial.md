@@ -3,8 +3,7 @@
 Welcome! This repository contains a tutorial for using the **IFC Surface Analysis and Reverberation Calculation** script, which performs acoustic and geometric analyses on floor surfaces in an IFC model, specifically focusing on medium-sized rooms like classrooms and offices. This script also generates visualizations of the results, helping you understand the acoustic properties of the modeled spaces. Let's walk through the process step-by-step.
 
 ## Target audience
-This script is intended for both beginners and experienced coders, primarily for those seeking a quick overview of room acoustics. It is most useful during the design phase when different designs and room sizes are still being evaluated.
-
+This script is intended primarily for OpenBIM Analysts Level 3, as it focuses on analyzing IFC models and evaluating room acoustics in a standalone python script. It is useful for beginners and experienced coders alike who need an efficient overview of room acoustics during the design phase.
 
 
 
