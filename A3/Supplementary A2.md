@@ -21,10 +21,11 @@ This document serves as Assignment A2: Use Case. We are submitting it alongside 
 
   - **BPMN drawing:**   
   1. Loading of model.
-  2. Extraction of data 
-  3. Adding missing infromation required to carry out calculation. In this case we dont expect sound absorption coefficient of finishing layer will be defined in model, therefore it will be chosen manually according finishing layer.
-  4. Calculation is carried out.
-  5. Generation of result and subsequent comparison with acoustic recommendation.
+  2. Room boundaries identification 
+  3. Area calculation
+  5. Sound absorption coefficient identification
+  6. Analysis range determination
+  7. Generation of result and subsequent comparison with acoustic recommendation
 
 
   </details>
