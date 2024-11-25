@@ -36,9 +36,9 @@ This document serves as Assignment A2: Use Case. We are submitting it alongside 
 
   - **Identify where a new script/fucntion/tool is needed and highlight this in BPMN diagram** 
 
- 1. In first step a script or tool is required to systamize the extraction of ventilation components. This will access and list the required data from the model effectively.
- 2. A function is needed here to compare the extracted data from the IFC-model with the MEP-report. The function would guarantee that quantities, dimensions and flow rates match the specifications for design and regulations.
- 3. A sript would also include calculations for airflow based on the size of the room and the amount of occupants, which could be incorporated into the validation tool or done separately.
+ Our script is needed mainly in Room boundaries definition part of script since IFC model proivded doesnt have room boundaries definied via corresponding function of specific BIM programme where model was created.
+Moreover, our script provides tool how to determine absoprotion coefficient of different surfaces if sound absorption coefficient is not definied in IFC model.
+Furthermore, script provides tool how to take into account only specific (regular) room shapes into account, since reverberation time calculation is based on Sabine formula which is used for regular room shapes.
 
 
 
