@@ -5,7 +5,10 @@
 #Important - must run these commands before running the script
 """
 pip install tqdm
-pip instal ifcopenshell
+pip install ifcopenshell
+pip install numpy
+pip install pandas
+pip install matplotlib
 
 """
 
@@ -24,7 +27,7 @@ from scipy.spatial import ConvexHull
 from matplotlib.patches import Polygon
 
 # Define the save directory
-save_directory = r"C:\Users\Magnus\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\Vizual\Floor_Plans"
+save_directory = r"C:\Users\magnu\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\Vizual\Floor_Plans"
 
 # Ensure the directory exists
 os.makedirs(save_directory, exist_ok=True)
@@ -85,8 +88,8 @@ def load_ifc_with_progress(file_path):
     print("Model successfully loaded and ready for analysis!")
     return ifc_model
 
-# Example Usage
-file_path = r"C:\Users\Magnus\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\IFC_Models\CES_BLD_24_06_ARC.IFC"
+# Defining model path
+file_path = r"C:\Users\magnu\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\IFC_Models\CES_BLD_24_06_ARC.IFC"
 ifc_model = load_ifc_with_progress(file_path)
 
 
