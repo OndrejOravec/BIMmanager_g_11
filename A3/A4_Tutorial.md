@@ -78,6 +78,30 @@ The script then analyzes the geometry of the building, focusing on medium-sized 
 - It calculates the floor area, height, volume, and surrounding surface types (e.g., walls, beams, windows).
 - The script uses these details to estimate reverberation times based on Sabine's formula.
 
+
+####Reduction Factor function
+```
+def reduction_factor(a, b, t=352):
+    """
+    Calculate the reduction factor for a rectangular shape. 
+
+    Reason:
+    The surface area is only found as the whole surface of an object. The reduction factor is specifically for this model
+    where external walls have a thickness of 352mm. To extract only the area of the internal side of these walls a reduction
+    factor has been found and it is dependent on the lenght and height of the wall piece and the thickness.
+
+    Parameters:
+    - a (float): Length of one side of the rectangle.
+    - b (float): Length of the other side of the rectangle.
+    - t (float): Thickness of the material (default is 352).
+
+    Returns:
+    - float: Reduction factor.
+    """
+    return (a * b) / (2 * (a * b) + 2 * (b * t) + 2 * (a * t))
+```
+
+
 ### Display and Visualize Results
 Once all rooms are analyzed, the results are printed in the console. They include:
 - Floor Area
