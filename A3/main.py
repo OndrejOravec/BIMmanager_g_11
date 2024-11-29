@@ -225,14 +225,15 @@ def measure_vertical_distances_to_ifccovering(surface, coverings):
     - coverings: A list of covering objects, each with pre-calculated bounding boxes (min_coords, max_coords).
 
     Returns:
-    - list: A list of vertical distances (float) from the surface's sample points to the nearest coverings.
-        - If no covering is above a point, the distance is set to None.
+    - float or None: The determined height (in meters), or None if the floor should be filtered out.
     """
-    points = get_sample_points(surface)  # Get center point of the surface.
+    points = get_sample_points(surface)  # Get multiple points on the surface.
     if not points:
-        return []  # Return an empty list if there are no valid sample points.
+        print("No valid points found for surface.")
+        return None  # Return None if there are no valid sample points.
 
-    distances = []  # Initialize list to store distances.
+    valid_heights = []  # List to store valid heights.
+
     for point in points:
         closest_distance = float('inf')  # Initialize closest distance to a very large number.
         point_xy = point[:2]  # Use only the X and Y coordinates for horizontal alignment.
@@ -251,9 +252,28 @@ def measure_vertical_distances_to_ifccovering(surface, coverings):
                     if distance < closest_distance:
                         closest_distance = distance  # Update the closest distance.
 
-        distances.append(closest_distance if closest_distance != float('inf') else None)
+        # Store the closest valid distance for this point.
+        if closest_distance != float('inf'):
+            valid_heights.append(closest_distance)
 
-    return distances  # Return the list of distances.
+    # Apply filtering logic
+    if not valid_heights or any(h > 4 or h < 2 for h in valid_heights):
+        print(f"Surface filtered out due to invalid height(s): {valid_heights}")
+        return None  # Filter out the floor if any height is invalid.
+
+    # Replace 2.5 m with 3 m (correction step)
+    corrected_heights = [3.0 if h == 2.5 else h for h in valid_heights]
+
+    # Determine the final height
+    if any(h == 3 for h in corrected_heights):
+        return 3.0  # Use 3 m if any point measures exactly 3 m.
+    else:
+        average_height = sum(corrected_heights) / len(corrected_heights)  # Calculate average height.
+        print(f"Average height for surface after correction: {average_height:.2f} m")
+        return average_height  # Return the average height.
+
+
+
 
 def is_rectangular(surface, tolerance=0.05):
     """
@@ -533,17 +553,19 @@ def analyze_all_floor_arc_surfaces(ifc_model):
                     max_c[1] >= floor_min_coords[1] and min_c[1] <= floor_max_coords[1]):
                     filtered_coverings.append(covering)
 
-            distances = measure_vertical_distances_to_ifccovering(surface, filtered_coverings)
-            if any(distance is not None and distance > 3.1 for distance in distances):
-                actual_distance = max([d for d in distances if d is not None], default=0)
-                print(f"{surface.Name} filtered out due to exceeding ceiling distance (Actual height: {actual_distance:.2f} m).")
-                continue
+            # Measure the height using the updated function
+            vertical_distance = measure_vertical_distances_to_ifccovering(surface, filtered_coverings)
 
-            valid_distances = [d for d in distances if d is not None]
-            if not valid_distances:
+            # Check if the height is valid (not None)
+            if vertical_distance is None:
                 print(f"Cannot proceed without a valid ceiling height for {surface.Name}.")
                 continue
-            vertical_distance = sum(valid_distances) / len(valid_distances)
+
+            # Check if the height exceeds 3.1 m (filter condition)
+            if vertical_distance > 3.1:
+                print(f"{surface.Name} filtered out due to exceeding ceiling distance (Actual height: {vertical_distance:.2f} m).")
+                continue
+
 
             # Step 5: Classify surrounding surfaces and calculate areas.
             margin = 0.5  # Extend analysis area by 0.5 meters around the floor.

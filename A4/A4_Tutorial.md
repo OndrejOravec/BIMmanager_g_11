@@ -1,5 +1,9 @@
 # IFC Surface Analysis and Reverberation Calculation Script Tutorial
 
+## Brief overview
+This script detects floor surfaces and surrounding surfaces to make up all rooms. Then it filters out irrelevant rooms and calculates reverberation time for the relevant rooms that are left. This gives an estimate of the acoustic competences of every room.
+
+## Introduction to Tutorial
 Welcome! This repository contains a tutorial for using the **IFC Surface Analysis and Reverberation Calculation** script, which performs acoustic and geometric analyses on floor surfaces in an IFC model, specifically focusing on medium-sized rooms like classrooms and offices. This script also generates visualizations of the results, helping you understand the acoustic properties of the modeled spaces. Let's walk through the process step-by-step.
 
 ## Target audience
@@ -97,7 +101,7 @@ The script also creates several visualizations using **matplotlib**, such as:
 3. **Customize Visualization**: You can add or remove visualizations based on your needs. If you want more specific visual feedback, feel free to modify the plotting sections.
 
 ## Extending the Script
-- **Adding More Room Types**: Currently, the script looks for "Floor:ARC - Wood flooring". You can modify it to analyze other room types by changing the filtering criteria.
+- **Adding More Room Types**: Currently, the script looks for "Floor:ARC - Wood flooring". Reason is all relevant rooms in this project has wood flooring. You can modify it to analyze other room types by changing the filtering criteria.
 - **Advanced Acoustic Modeling**: For more precise acoustic analysis, consider integrating more detailed absorption coefficients based on material properties.
 - **Exporting Results**: If you need to export the results to a CSV or Excel file, you can easily extend the script using the `pandas` library to write the `results` DataFrame to a file:
 
@@ -251,7 +255,7 @@ def face_area(a, b, t=352, total_area=None):
 ```
 
 
-### 6. Top surface are
+### 6. Top surface area
 This function finds the upward facing surface of a surface object so that it is the floor area that is found. It creates the geometry for the surface, extracts the vertices, and iterates through triangular faces to determine whether they face upward.
 ```
 def get_top_surface_area(surface):
@@ -354,7 +358,7 @@ def get_sample_points(surface):
 
 ### 9. Function to measure vertical height of room
 
-It calculates the vertical distance between a surface (typically a floor) and its closest coverings (such as ceilings). It uses the sample point of the floor and iterates through all covering elements to find the closest one directly above the point, determining the vertical distance.
+It calculates the vertical distance between a surface (typically a floor) and its closest coverings (such as ceilings). It uses the sample point of the floor and iterates through all covering elements to find the closest one directly above the point, determining the vertical distance. Unfortunately, for this project four rooms kept getting the height of 2.5m which was checked in the model and since all rooms have the same height of 3m this is a fault in the script. A solution hasn't been found and therefor there is a correction step making sure that the height of 2.5m is changed to 3m.
 
 ```
 def measure_vertical_distances_to_ifccovering(surface, coverings):
@@ -366,14 +370,15 @@ def measure_vertical_distances_to_ifccovering(surface, coverings):
     - coverings: A list of covering objects, each with pre-calculated bounding boxes (min_coords, max_coords).
 
     Returns:
-    - list: A list of vertical distances (float) from the surface's sample points to the nearest coverings.
-        - If no covering is above a point, the distance is set to None.
+    - float or None: The determined height (in meters), or None if the floor should be filtered out.
     """
-    points = get_sample_points(surface)  # Get center point of the surface.
+    points = get_sample_points(surface)  # Get multiple points on the surface.
     if not points:
-        return []  # Return an empty list if there are no valid sample points.
+        print("No valid points found for surface.")
+        return None  # Return None if there are no valid sample points.
 
-    distances = []  # Initialize list to store distances.
+    valid_heights = []  # List to store valid heights.
+
     for point in points:
         closest_distance = float('inf')  # Initialize closest distance to a very large number.
         point_xy = point[:2]  # Use only the X and Y coordinates for horizontal alignment.
@@ -392,9 +397,26 @@ def measure_vertical_distances_to_ifccovering(surface, coverings):
                     if distance < closest_distance:
                         closest_distance = distance  # Update the closest distance.
 
-        distances.append(closest_distance if closest_distance != float('inf') else None)
+        # Store the closest valid distance for this point.
+        if closest_distance != float('inf'):
+            valid_heights.append(closest_distance)
 
-    return distances  # Return the list of distances.
+    # Apply filtering logic
+    if not valid_heights or any(h > 4 or h < 2 for h in valid_heights):
+        print(f"Surface filtered out due to invalid height(s): {valid_heights}")
+        return None  # Filter out the floor if any height is invalid.
+
+    # Replace 2.5 m with 3 m (correction step)
+    corrected_heights = [3.0 if h == 2.5 else h for h in valid_heights]
+
+    # Determine the final height
+    if any(h == 3 for h in corrected_heights):
+        return 3.0  # Use 3 m if any point measures exactly 3 m.
+    else:
+        average_height = sum(corrected_heights) / len(corrected_heights)  # Calculate average height.
+        print(f"Average height for surface after correction: {average_height:.2f} m")
+        return average_height  # Return the average height.
+
 ```
 
 
@@ -719,17 +741,19 @@ def analyze_all_floor_arc_surfaces(ifc_model):
                     max_c[1] >= floor_min_coords[1] and min_c[1] <= floor_max_coords[1]):
                     filtered_coverings.append(covering)
 
-            distances = measure_vertical_distances_to_ifccovering(surface, filtered_coverings)
-            if any(distance is not None and distance > 3.1 for distance in distances):
-                actual_distance = max([d for d in distances if d is not None], default=0)
-                print(f"{surface.Name} filtered out due to exceeding ceiling distance (Actual height: {actual_distance:.2f} m).")
-                continue
+            # Measure the height using the updated function
+            vertical_distance = measure_vertical_distances_to_ifccovering(surface, filtered_coverings)
 
-            valid_distances = [d for d in distances if d is not None]
-            if not valid_distances:
+            # Check if the height is valid (not None)
+            if vertical_distance is None:
                 print(f"Cannot proceed without a valid ceiling height for {surface.Name}.")
                 continue
-            vertical_distance = sum(valid_distances) / len(valid_distances)
+
+            # Check if the height exceeds 3.1 m (filter condition)
+            if vertical_distance > 3.1:
+                print(f"{surface.Name} filtered out due to exceeding ceiling distance (Actual height: {vertical_distance:.2f} m).")
+                continue
+
 
             # Step 5: Classify surrounding surfaces and calculate areas.
             margin = 0.5  # Extend analysis area by 0.5 meters around the floor.
@@ -779,6 +803,7 @@ def analyze_all_floor_arc_surfaces(ifc_model):
             })
 
     return results  # Return analysis results for all eligible floors.
+
 ```
 
 
