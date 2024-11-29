@@ -2,8 +2,6 @@
 
 This document serves as Assignment A2: Use Case. It is being submitted alongside the A3 assignment to address missing information that could not be updated earlier. As managers, we decided to develop our own tool after the A2 submission.
 
----
-
 ## A2b. Identify Claim
 
   - **Claim:**  
@@ -69,5 +67,5 @@ This document serves as Assignment A2: Use Case. It is being submitted alongside
 ## A2g. Identify Appropriate Software License
 
   - **Software License:**  
-    >No license needed as the 3D-modelling program used "Blender" is open-software and all the coding has been done in VSCode using Python which is also open-software.
+    No license needed as the 3D-modelling program used "Blender" is open-software and all the coding has been done in VSCode using Python which is also open-software.
 
