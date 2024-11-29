@@ -39,10 +39,10 @@ print(f"Save directory is set to: {save_directory}")
 # -------------------- Load the IFC Model --------------------
 # Specify the path to the IFC file (update the path if needed).
 print("WELCOME")
-print("THIS SCRIPT WILL LOAD AN ARCHITECTURAL IFC MODEL AND DETECT MEDIUM SIZED ROOMS SUCH AS CLASSROOMS AND OFFICES")
+print("THIS SCRIPT WILL LOAD AN ARCHITECTURAL IFC MODEL AND DETECT MEDIUM SIZED ROOMS SUCH AS OFFICES")
 print("IT WILL THEN FIND: FLOOR AREA, HEIGHT, VOLUME, AVERAGE ABSORPTION AREA AND REVERBERATION TIME")
 print("THIS WILL GIVE AN IDEA OF THE ACOUSTIC COMPETENCES OF EACH ROOM")
-print("RECOMMENDED REVERBERATION TIME FOR CLASSROOMS IS 0.4-0.6 SECONDS WHILE LARGER ROOMS AND OFFICES CAN GO UP TO 1-1.1 SECONDS")
+print("RECOMMENDED REVERBERATION TIME FOR CLASSROOMS AND SMALL OFFICES IS 0.4-0.6 SECONDS WHILE LARGER ROOMS AND OFFICES CAN GO UP TO 1-1.1 SECONDS")
 print("LASTLY THE VISUALISATIONS OF THE RESULTS WILL BE DISPLAYED")
 print("-----------------------------------------------------------")
 print("THE SCRIPT WILL TAKE A COUPLE MINUTES TO LOAD THE MODEL AND FIND APPROPRIATE ROOMS")
@@ -869,9 +869,6 @@ plt.title("Absorption Areas by Surface Type and Room", fontsize=14)
 plt.xlabel("Room Index", fontsize=12)
 plt.ylabel("Surface Type", fontsize=12)
 
-# Enhance layout
-plt.tight_layout()
-
 #display the heatmap
 plt.show()
 
@@ -927,19 +924,3 @@ for bar in bars:
 plt.tight_layout()
 plt.show()
 
-
-# Identify outliers
-threshold = 1.0  # Example threshold for reverberation time
-outliers = [(area, time) for area, time in zip(floor_areas, reverberation_times) if time > threshold]
-
-plt.figure(figsize=(10, 6))
-plt.scatter(floor_areas, reverberation_times, c='blue', alpha=0.7, edgecolors='w', s=50)
-for area, time in outliers:
-    plt.annotate(f"Outlier ({area:.1f}, {time:.2f})", (area, time), fontsize=8, color='red')
-
-plt.xlabel('Floor Area (m²)', fontsize=12)
-plt.ylabel('Reverberation Time (s)', fontsize=12)
-plt.title('Reverberation Time vs. Floor Area (Outliers Highlighted)', fontsize=14)
-plt.grid(True, linestyle='--', alpha=0.5)
-plt.tight_layout()
-plt.show()

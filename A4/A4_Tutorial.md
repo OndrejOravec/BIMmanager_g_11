@@ -4,7 +4,7 @@
 This script detects floor surfaces and surrounding surfaces to make up all rooms. Then it filters out irrelevant rooms and calculates reverberation time for the relevant rooms that are left. This gives an estimate of the acoustic competences of every room.
 
 ## Introduction to Tutorial
-Welcome! This repository contains a tutorial for using the **IFC Surface Analysis and Reverberation Calculation** script, which performs acoustic and geometric analyses on floor surfaces in an IFC model, specifically focusing on medium-sized rooms like classrooms and offices. This script also generates visualizations of the results, helping you understand the acoustic properties of the modeled spaces. Let's walk through the process step-by-step.
+Welcome! This repository contains a tutorial for using the **IFC Surface Analysis and Reverberation Calculation** script, which performs acoustic and geometric analyses on floor surfaces in an IFC model, specifically focusing on medium-sized rooms like offices. This script also generates visualizations of the results, helping you understand the acoustic properties of the modeled spaces. Let's walk through the process step-by-step.
 
 ## Target audience
 This script is intended primarily for OpenBIM Analysts Level 3, as it focuses on analyzing IFC models and evaluating room acoustics in a standalone python script. It is useful for beginners and experienced coders alike who need an efficient overview of room acoustics during the design phase.
@@ -12,7 +12,7 @@ This script is intended primarily for OpenBIM Analysts Level 3, as it focuses on
 
 
 ## Complications and limitations
-The current version of the script is unable to accurately analyze rooms with non-rectangular shapes. This is an area for future improvement, though the script remains highly viable for analyzing rectangular rooms, which are common in office and classroom settings. Additionally, there are some limitations in precision, meaning the results should be considered as close estimates. For situations that require precise values, further detailed calculations may be necessary. The accuracy of the script can improve with IFC models that have strict boundaries in the design phase, as the script is currently unable to fully exclude certain objects, leading to the introduction of compensating adjustments throughout the script.
+The current version of the script is unable to accurately analyze rooms with non-rectangular shapes. This is an area for future improvement, though the script remains highly viable for analyzing rectangular rooms, which are common in office settings. Additionally, there are some limitations in precision, meaning the results should be considered as close estimates. For situations that require precise values, further detailed calculations may be necessary. The accuracy of the script can improve with IFC models that have strict boundaries in the design phase, as the script is currently unable to fully exclude certain objects, leading to the introduction of compensating adjustments throughout the script.
 
 
 
@@ -34,7 +34,7 @@ These packages include:
 
 ## Overview of the Script
 This will give a brief overview of what the script does and at the end of the tutorial all parts of the script will be displayed and explained thoroughly. The script performs the following key steps:
-1. **Loads an IFC model**: Using IfcOpenShell, it reads the architectural IFC file to detect medium-sized rooms (such as classrooms and offices).
+1. **Loads an IFC model**: Using IfcOpenShell, it reads the architectural IFC file to detect medium-sized rooms (such as offices).
 2. **Geometry Analysis**: It identifies relevant floor surfaces, bounding boxes, and other surrounding elements like walls, windows, and beams.
 3. **Acoustic Analysis**: Calculates reverberation times based on surface areas, room volumes, and average absorption coefficients.
 4. **Visualization**: Provides visual feedback by plotting results such as reverberation time versus floor area, 3D scatter plots, and other summary charts.
@@ -55,7 +55,7 @@ When you run the script, it begins by printing a welcome message explaining what
 
 ```python
 print("WELCOME")
-print("THIS SCRIPT WILL LOAD AN ARCHITECTURAL IFC MODEL AND DETECT MEDIUM SIZED ROOMS SUCH AS CLASSROOMS AND OFFICES")
+print("THIS SCRIPT WILL LOAD AN ARCHITECTURAL IFC MODEL AND DETECT MEDIUM SIZED ROOMS SUCH AS OFFICES")
 # Countdown before assigning the file path
 print("Starting in...")
 for i in range(5, 0, -1):
@@ -77,8 +77,8 @@ def load_ifc_with_progress(file_path):
 ```
 
 ### Analyze Geometry and Acoustic Properties
-The script then analyzes the geometry of the building, focusing on medium-sized floor slabs that meet the criteria of being suitable for classrooms or offices.
-- It filters out rooms that are too large or too small, or those that are not rectangular. The filters for this script has been chosen this way to target specifically classrooms and offices for the analysis as this is where most people will be located with acoustic needs.
+The script then analyzes the geometry of the building, focusing on medium-sized floor slabs that meet the criteria of being suitable for offices.
+- It filters out rooms that are too large or too small, or those that are not rectangular. The filters for this script has been chosen this way to target specifically offices for the analysis as this is where most people will be located with acoustic needs.
 - It calculates the floor area, height, volume, and surrounding surface types (e.g., walls, beams, windows).
 - The script uses these details to estimate reverberation times based on Sabine's formula.
 
@@ -422,7 +422,7 @@ def measure_vertical_distances_to_ifccovering(surface, coverings):
 
 
 ### 10. Filter-function to check if rectangular
-For this project it was chosen to look for rectangular rooms only. The reason for this function is to avoid hallways and other open spaces as lobbies and cafeterias that aren't offices and classrooms. It compares the calculated area of the bounding box to the actual top surface area, allowing for a small tolerance. If the areas match within the given tolerance, the surface is considered rectangular. 
+For this project it was chosen to look for rectangular rooms only. The reason for this function is to avoid hallways and other open spaces as lobbies and cafeterias that aren't offices. It compares the calculated area of the bounding box to the actual top surface area, allowing for a small tolerance. If the areas match within the given tolerance, the surface is considered rectangular. 
 
 ```
 def is_rectangular(surface, tolerance=0.05):
@@ -1162,25 +1162,6 @@ for bar in bars:
 plt.tight_layout()
 plt.show()
 
-```
-### 28. Outlier scatterplot
-This plot highlights the outliers in reverberation time vs. floor area and might be relevant in some projects.
-```
-#Identify outliers
-threshold = 1.0  # Example threshold for reverberation time
-outliers = [(area, time) for area, time in zip(floor_areas, reverberation_times) if time > threshold]
-
-plt.figure(figsize=(10, 6))
-plt.scatter(floor_areas, reverberation_times, c='blue', alpha=0.7, edgecolors='w', s=50)
-for area, time in outliers:
-    plt.annotate(f"Outlier ({area:.1f}, {time:.2f})", (area, time), fontsize=8, color='red')
-
-plt.xlabel('Floor Area (m²)', fontsize=12)
-plt.ylabel('Reverberation Time (s)', fontsize=12)
-plt.title('Reverberation Time vs. Floor Area (Outliers Highlighted)', fontsize=14)
-plt.grid(True, linestyle='--', alpha=0.5)
-plt.tight_layout()
-plt.show()
 ```
 
 

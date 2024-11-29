@@ -5,7 +5,7 @@
 # About the Tool
 
   - **Problem/Claim Solved by the Tool:**  
-    The tool calculates the reverberation time of all rooms with wooden floors, focusing on offices and classrooms where most people are located. For example, a room with a volume of 193 m³ is reported to have a reverberation time of 0.63 seconds. Our script not only calculates this room quickly but also handles the remaining 42 relevant rooms. Based on the scatter plot of reverberation time vs. volume, three rooms with a volume of 193 m³ all have a reverberation time close to 0.63 seconds, verifying the claim.
+    The tool calculates the reverberation time of all rooms with wooden floors, focusing on offices where most people are located. For example, a room with a volume of 193 m³ is reported to have a reverberation time of 0.63 seconds. Our script not only calculates this room quickly but also handles the remaining 42 relevant rooms. Based on the scatter plot of reverberation time vs. volume, three rooms with a volume of 193 m³ all have a reverberation time close to 0.63 seconds, verifying the claim.
 
   - **Source of the Problem:**  
     In the report "CES_BLD_24_0_6_MEP" (p. 22), it is stated: "With the volume of Room 1 at 193.9 m³, the reverberation time is determined to be 0.63 s."
