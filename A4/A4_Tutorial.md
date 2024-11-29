@@ -91,27 +91,6 @@ The script also creates several visualizations using **matplotlib**, such as:
 - **Histograms**: To show the distribution of reverberation times and floor areas.
 - **3D Plots**: To show relationships between floor area, volume, and reverberation time.
 
-Here's an example of how a scatter plot is generated:
-
-```python
-plt.scatter(floor_areas, reverberation_times, c=colors, alpha=0.7, edgecolors='w', s=50)
-plt.xlabel('Floor Area (m²)', fontsize=12)
-plt.ylabel('Reverberation Time (s)', fontsize=12)
-plt.title('Reverberation Time vs. Floor Area', fontsize=14)
-plt.show()
-```
-
-## Key Functions Explained
-
-### Helper Functions
-The script uses several helper functions to make the analysis easier:
-- **`get_top_surface_area(surface)`**: Calculates the area of the top-facing surface of the floor slab.
-- **`is_rectangular(surface, tolerance=0.05)`**: Checks if a given surface is rectangular within a tolerance level of 5%, which is important for considering only standard-shaped rooms.
-- **`calculate_reverberation_time(volume, avg_absorption_coefficient, total_surface_area)`**: Uses Sabine's formula to estimate reverberation time based on room characteristics.
-
-### Analysis Function
-- **`analyze_all_floor_arc_surfaces(ifc_model)`**: This is the main analysis function, which iterates through all floor surfaces in the IFC model, calculates the desired metrics, and then appends the results for each eligible surface to a results list.
-
 ## Tips for Effective Usage
 1. **Adjust the Surface Filtering Criteria**: Depending on your use case, you might need to adjust the filtering criteria for room sizes. This can be done in the `analyze_all_floor_arc_surfaces` function.
 2. **Check IFC Model Quality**: Ensure that your IFC model has correctly defined surfaces and that the attributes used in filtering are properly assigned. The script relies on surface names and types, so incorrect or incomplete data could lead to missed surfaces.
@@ -146,7 +125,10 @@ The script uses several helper functions to make the analysis easier:
 # Detailed explanation the script
 ## Loading phase
 
-### Importing libraries and defining save directory
+### 1. Importing libraries and defining save directory
+This part of the script imports all necessary libraries and defines the directory where visualizations will be saved. 
+
+
 ```
 import ifcopenshell
 import ifcopenshell.geom
@@ -171,6 +153,9 @@ os.makedirs(save_directory, exist_ok=True)
 print(f"Save directory is set to: {save_directory}")
 ```
 
+### 2. Loading the IFC Model
+
+The load_ifc_with_progress() function simulates a loading process while reading an IFC model file. This is for user-friendliness to indicate that the model is loading. The loaded model is then returned and stored for further analysis.
 
 ```
 def load_ifc_with_progress(file_path):
@@ -206,7 +191,7 @@ def load_ifc_with_progress(file_path):
     print("Model successfully loaded and ready for analysis!")
     return ifc_model
 
-# Example Usage
+# Defining model path
 file_path = r"C:\Users\Magnus\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\IFC_Models\CES_BLD_24_06_ARC.IFC"
 ifc_model = load_ifc_with_progress(file_path)
 ```
@@ -214,7 +199,18 @@ ifc_model = load_ifc_with_progress(file_path)
 
 ## Calculation and analyzing
 
-### Reduction Factor function
+
+### 3. Settings
+The script sets the geometry processing options for the IFC model using ifcopenshell.geom.settings(). Here, world coordinates are enabled to ensure consistent spatial representation during geometry calculations.
+
+
+```
+settings = ifcopenshell.geom.settings()
+settings.set(settings.USE_WORLD_COORDS, True)  # Use world coordinates for all geometry.
+```
+
+
+### 4. Reduction Factor function
 The functions adjusts the surface area when detecting a 352mm thick external wall. The script has not been able to only pick the surface facing the room, but it calculates the whole surface area of the object and this factor reduces the surface are to the right face.
 ```
 def reduction_factor(a, b, t=352):
@@ -238,7 +234,7 @@ def reduction_factor(a, b, t=352):
 ```
 
 
-### Face area function
+### 5. Face area function
 This functions calculates the surface area of the face facing the room from an external wall object with a thickness of 352mm.
 ```
 def face_area(a, b, t=352, total_area=None):
@@ -255,8 +251,8 @@ def face_area(a, b, t=352, total_area=None):
 ```
 
 
-### Top surface are
-
+### 6. Top surface are
+This function finds the upward facing surface of a surface object so that it is the floor area that is found. It creates the geometry for the surface, extracts the vertices, and iterates through triangular faces to determine whether they face upward.
 ```
 def get_top_surface_area(surface):
     """
@@ -298,7 +294,9 @@ def get_top_surface_area(surface):
         return 0  # Return 0 if an error occurs.
 ```
 
-### Bounding box function
+### 7. Bounding box function
+
+This function computes the smallest 3D box that still contains the surface. It generates the 3D geometry for the given surface, reshapes the vertices into coordinate sets, and finds the minimum and maximum points. These points are used to define the bounding box, which provides spatial limits for the surface
 
 ```
 def get_bounding_box(surface):
@@ -327,7 +325,9 @@ def get_bounding_box(surface):
         return None, None  # Return None if there's an error.
 ```
 
-### Sample points function
+### 8. Sample points function
+
+This calculates the midpoint of the bounding box for a surface, which serves as the representative center point. This function ensures that the Z-coordinate of the point corresponds to the top of the surface, making it useful for subsequent height measurements.
 
 ```
 def get_sample_points(surface):
@@ -352,7 +352,10 @@ def get_sample_points(surface):
     return [center]  # Return the center point as a list.
 ```
 
-### Function to measure vertical height of room
+### 9. Function to measure vertical height of room
+
+It calculates the vertical distance between a surface (typically a floor) and its closest coverings (such as ceilings). It uses the sample point of the floor and iterates through all covering elements to find the closest one directly above the point, determining the vertical distance.
+
 ```
 def measure_vertical_distances_to_ifccovering(surface, coverings):
     """
@@ -396,7 +399,9 @@ def measure_vertical_distances_to_ifccovering(surface, coverings):
 
 
 
-### Filter-function to check if rectangular
+### 10. Filter-function to check if rectangular
+For this project it was chosen to look for rectangular rooms only. The reason for this function is to avoid hallways and other open spaces as lobbies and cafeterias that aren't offices and classrooms. It compares the calculated area of the bounding box to the actual top surface area, allowing for a small tolerance. If the areas match within the given tolerance, the surface is considered rectangular. 
+
 ```
 def is_rectangular(surface, tolerance=0.05):
     """
@@ -431,7 +436,9 @@ def is_rectangular(surface, tolerance=0.05):
     return abs(ratio - 1.0) <= tolerance
 ```
 
-### Surrounding surfaces function
+### 11. Surrounding surfaces function
+This function analyzes and classifies surrounding surfaces like walls, windows, and beams relative to a given floor surface. It calculates the area of relevant faces for each type of surrounding element, adjusting the area based on the type of material (e.g., reducing window areas by 50%). The reason that windows and other thin walls must be reduced is that the area it gets is both the inwards- and outwards facing surface area. Beams are reduced even more due to their geometry. The function returns a dictionary with the total areas for each type
+
 ```
 def classify_surrounding_surfaces(surface, vertical_distance, nearby_elements):
     """
@@ -542,7 +549,10 @@ def classify_surrounding_surfaces(surface, vertical_distance, nearby_elements):
 
     return surrounding_areas  # Return the classified areas for walls, windows, and beams.
 ```
-### Absorption coefficient calculation function
+### 12. Absorption coefficient calculation function
+
+This function computes the average absorption coefficient for the room's surfaces. It uses predefined absorption coefficients for different surface types, calculates the total surface area, and then finds the contribution of each surface to the overall absorption. It also returns the percentage area for each surface type.
+
 ```
 def calculate_absorption_coefficients(surrounding_areas, top_surface_area):
     """
@@ -587,7 +597,10 @@ def calculate_absorption_coefficients(surrounding_areas, top_surface_area):
     return absorption_percentages, avg_absorption_coefficient
 ```
 
-### Reverberation time function
+### 13. Reverberation time function
+
+It calculates the reverberation time of a room using Sabine's formula. This formula requires the volume of the room, the average absorption coefficient, and the total surface area.
+
 ```
 def calculate_reverberation_time(volume, avg_absorption_coefficient, total_surface_area):
     """
@@ -607,7 +620,25 @@ def calculate_reverberation_time(volume, avg_absorption_coefficient, total_surfa
 
 ```
 
-### Function to analyze floors
+### 14. Function to analyze floors
+
+The analyze_all_floor_arc_surfaces() function performs a detailed analysis of each eligible floor surface in the IFC model. It follows several steps:
+
+- **Preprocessing Coverings**: The function first processes all ceiling coverings (IfcCovering) in the model and extracts their bounding box coordinates. This preprocessing step makes it easier to later determine the height of each room.
+
+- **Preprocessing Other Elements**: It then processes other elements such as walls, windows, and beams (IfcProduct). Based on their names, the function classifies these elements and stores their bounding box coordinates and type (e.g., wall, window, or beam).
+
+- **Filtering Eligible Surfaces**: The function iterates through all floor surfaces (IfcSlab) in the model, filtering out surfaces based on specific criteria such as area limits (minimum of 15 m² and maximum of 150 m²) and whether the surface is rectangular. This ensures only suitable floors are considered for analysis.
+
+- **Measuring Height to Ceiling**: For each eligible floor surface, the function measures the vertical distance to the nearest ceiling. It filters coverings that are horizontally aligned with the floor and computes the average ceiling height, filtering out rooms with heights exceeding 3.1 meters.
+
+- **Classifying Surrounding Surfaces**: The function then identifies and classifies the surrounding surfaces (walls, windows, and beams) within a margin of 0.5 meters around the floor. It calculates their respective areas and stores them for later use.
+
+- **Calculating Room Properties**: Using the top surface area and ceiling height, the function calculates the volume of the room. It then adds the floor and ceiling areas to the surrounding areas and calculates the absorption coefficients and percentages for each surface type.
+
+- **Calculating Reverberation Time**: Finally, the function uses Sabine's formula to calculate the reverberation time of the room based on its volume, total surface area, and average absorption coefficient. The results are appended to a list, which contains the calculated metrics for each eligible floor.
+
+
 ```
 def analyze_all_floor_arc_surfaces(ifc_model):
     """
@@ -753,7 +784,9 @@ def analyze_all_floor_arc_surfaces(ifc_model):
 
 
 
-### Running the analysis
+### 15. Running the analysis
+
+The final part runs the analysis on the loaded IFC model and prints the results. It iterates through the calculated metrics for each room, including floor area, ceiling height, volume, absorption percentages, and reverberation time, presenting the findings in a structured format.
 
 ```
 results = analyze_all_floor_arc_surfaces(ifc_model)
@@ -775,37 +808,355 @@ for result in results:
         print(f"    Reverberation Time: Cannot be calculated (average absorption coefficient is zero)")
 ```
 
-##
+## Creating visuals
+
+
+### 16. Checking for results
+Before beginning the plotting it checks if the results have been created correctly
+```
+# Check if there are results to plot
+if results:
+    # Extract Floor Areas and Reverberation Times
+    # Extract Floor Areas, Volumes, and Reverberation Times
+    floor_areas = [result['top_surface_area'] for result in results]
+    volumes = [result['volume'] for result in results]  # Add this line to extract volumes
+    reverberation_times = [result['reverberation_time'] for result in results]
+    floor_names = [result['name'] for result in results]  # For the table
 
 ```
+### 17. Colors
+Colors are created for different area categories. The categories has no specific meaning, but is just to show how reverberation time might get higher with higher areas and volumes as expected.
+```
+# Assign colors based on Floor Area categories
+    colors = []
+    for area in floor_areas:
+        if area < 50:
+            colors.append('green')
+        elif 50 <= area <= 100:
+            colors.append('blue')
+        else:
+            colors.append('red')
+```
+### 18. Scatter plot
+Creates a scatter plot over floor area vs reverberation times
+```
+# Create scatter plot with smaller markers
+    plt.figure(figsize=(10, 6))
+    scatter = plt.scatter(
+        floor_areas,
+        reverberation_times,
+        c=colors,
+        alpha=0.7,
+        edgecolors='w',
+        s=50  
+    )
+```
+### 19. Legend
+Creates a custom made legend for the plot
+```
+ # Create custom legend with the number of rooms
+    green_patch = mpatches.Patch(color='green', label='< 50 m²')
+    blue_patch = mpatches.Patch(color='blue', label='50-100 m²')
+    red_patch = mpatches.Patch(color='red', label='> 100 m²')
+    legend = plt.legend(
+        handles=[green_patch, blue_patch, red_patch],
+        title=f'Floor Area Categories\n(n={len(results)})'
+    )
 
+    # Make legend labels bold
+    for text in legend.get_texts():
+        text.set_fontweight('bold')
 ```
 
+
+### 20. Best-fit line and plot finishing
+Also a best-fit line is computed to show the connection between reverberation time and floor area. Lastly the plot is computed.
 ```
+# Compute best-fit line (linear regression)
+    if len(floor_areas) > 1:
+        # Fit a first-degree polynomial (linear fit)
+        coefficients = np.polyfit(floor_areas, reverberation_times, 1)
+        polynomial = np.poly1d(coefficients)
+        # Generate x values for the fit line
+        x_fit = np.linspace(min(floor_areas), max(floor_areas), 100)
+        y_fit = polynomial(x_fit)
+        # Plot the fit line as dotted
+        plt.plot(
+            x_fit,
+            y_fit,
+            'k--',  # 'k--' means black dashed line
+            label='Best Fit Line'
+        )
+
+        # Update legend to include the fit line
+        legend = plt.legend(
+            handles=[green_patch, blue_patch, red_patch, plt.Line2D([], [], color='k', linestyle='--', label='Best Fit Line')],
+            title=f'Floor Area Categories\n(n={len(results)})'
+        )
+
+        # Make all legend labels bold
+        for text in legend.get_texts():
+            text.set_fontweight('bold')
+
+    # Set labels and title
+    plt.xlabel('Floor Area (m²)', fontsize=12)
+    plt.ylabel('Reverberation Time (s)', fontsize=12)
+    plt.title('Reverberation Time vs. Floor Area', fontsize=14)
+
+    # Optional: Add grid for better readability
+    plt.grid(True, linestyle='--', alpha=0.5)
+
+    # Save and show plot
+    plt.tight_layout()
+    plt.show()
+```
+### 21. Data table
+To get an overview of all the raw data a Table is made showcasing every floor and its' values.
+```
+# Create a DataFrame for better table management
+df = pd.DataFrame({
+    "Floor Name": floor_names,
+    "Floor Area (m²)": [f"{area:.2f}" for area in floor_areas],
+    "Height to Ceiling (m)": [f"{result['vertical_distance']:.2f}" for result in results],
+    "Volume (m³)": [f"{result['volume']:.2f}" for result in results],
+    "Wall Area (m²)": [f"{result['surrounding_areas']['Wall']:.2f}" for result in results],
+    "Window Area (m²)": [f"{result['surrounding_areas']['Window']:.2f}" for result in results],
+    "Beam Area (m²)": [f"{result['surrounding_areas']['Beam']:.2f}" for result in results],
+    "Avg Absorption Coef.": [f"{result['avg_absorption_coefficient']:.3f}" for result in results],
+    "Reverberation Time (s)": [f"{result['reverberation_time']:.3f}" if result['reverberation_time'] is not None else "N/A" for result in results]
+})
+
+# Plot the table using Pandas styling
+fig, ax = plt.subplots(figsize=(14, max(2, len(df)*0.6)))  # Increased height per row
+ax.axis('off')  # Hide the axes
+
+# Create the table
+table = ax.table(
+    cellText=df.values,
+    colLabels=df.columns,
+    cellLoc='center',
+    loc='upper center'
+)
+
+# Style the table
+table.auto_set_font_size(False)
+table.set_fontsize(10)
+table.auto_set_column_width(col=list(range(len(df.columns))))
+
+# Increase the row height
+table.scale(1, 2)  # Adjust the second parameter to control vertical spacing (default is 1)
+
+# Apply monospaced font to all cells
+for key, cell in table.get_celld().items():
+    cell.set_text_props(fontfamily='monospace')
+
+# Make column headers bold
+for (i, j), cell in table.get_celld().items():
+    if i == 0:
+        cell.set_text_props(fontweight='bold')
+
+plt.title('Summary of Reverberation Analysis', fontsize=14, pad=20)
+plt.tight_layout()
+plt.show()
+```
+### 22. Histogram Reverberation time
+A histogram showcasing the distribution of reverberation time.
 
 ```
+ # Distribution of reverberation times
+plt.figure(figsize=(8, 5))
+plt.hist(reverberation_times, bins=10, color='skyblue', edgecolor='black', alpha=0.7)
+plt.axvline(np.mean(reverberation_times), color='red', linestyle='dashed', linewidth=1, label=f'Mean: {np.mean(reverberation_times):.2f}')
+plt.axvline(np.median(reverberation_times), color='green', linestyle='dashed', linewidth=1, label=f'Median: {np.median(reverberation_times):.2f}')
+plt.xlabel('Reverberation Time (s)', fontsize=12)
+plt.ylabel('Frequency', fontsize=12)
+plt.title('Distribution of Reverberation Times', fontsize=14)
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+### 23. Histogram Floor areas
+A histogram showcasing the distribution of floor areas.
 
 ```
+# Distribution of floor areas
+plt.figure(figsize=(8, 5))
+plt.hist(floor_areas, bins=10, color='lightgreen', edgecolor='black', alpha=0.7)
+plt.axvline(np.mean(floor_areas), color='red', linestyle='dashed', linewidth=1, label=f'Mean: {np.mean(floor_areas):.2f}')
+plt.axvline(np.median(floor_areas), color='blue', linestyle='dashed', linewidth=1, label=f'Median: {np.median(floor_areas):.2f}')
+plt.xlabel('Floor Area (m²)', fontsize=12)
+plt.ylabel('Frequency', fontsize=12)
+plt.title('Distribution of Floor Areas', fontsize=14)
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+### 24. Reverberation time vs. volume scatterplot
+A scatterplot showcasing reverberation time vs. volume is created.
+```
+# Reverberation time vs. volume
+plt.figure(figsize=(10, 6))
 
+# Scatterplot
+plt.scatter(volumes, reverberation_times, c='blue', alpha=0.7, edgecolors='w', s=50, label="Data Points")
+
+# Compute best-fit line (linear regression)
+if len(volumes) > 1:
+    coefficients = np.polyfit(volumes, reverberation_times, 1)
+    polynomial = np.poly1d(coefficients)
+    x_fit = np.linspace(min(volumes), max(volumes), 100)
+    y_fit = polynomial(x_fit)
+    plt.plot(x_fit, y_fit, 'k--', label='Best Fit Line')
+
+    # Display regression equation
+    equation = f"y = {coefficients[0]:.3f}x + {coefficients[1]:.3f}"
+    plt.text(0.05, 0.95, equation, transform=plt.gca().transAxes, fontsize=10, verticalalignment='top', bbox=dict(boxstyle="round", alpha=0.5))
+
+# Labels and title
+plt.xlabel('Volume (m³)', fontsize=12)
+plt.ylabel('Reverberation Time (s)', fontsize=12)
+plt.title('Reverberation Time vs. Volume', fontsize=14)
+
+# Grid and legend
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.legend()
+plt.tight_layout()
+
+# Save and show the plot
+plt.show()
 ```
 
+
+
+### 25. Heatmap of absorption areas
+This creates a heatmap of absorption areas. Mostly it just shows how much each surface type affects the average absorption area and can definitely be improved for more interesting visuals, but is still a good way to get an overview and for this project especially the ceiling makes an impact. This makes good sense at is it the only acoustic surface in the rooms.
 ```
+plt.figure(figsize=(10, 6))
+
+# Define absorption coefficients for each surface type
+absorption_coefficients = {
+    "Wall": 0.05,     # Absorption coefficient for painted gypsum walls.
+    "Window": 0.03,   # Absorption coefficient for windows.
+    "Beam": 0.05,     # Absorption coefficient for beams.
+    "Ceiling": 0.6,   # Absorption coefficient for acoustic ceiling.
+    "Floor": 0.07     # Absorption coefficient for wooden flooring.
+}
+
+# Prepare data for the heatmap: Absorption Area = Surface Area * Absorption Coefficient
+absorption_area_data = pd.DataFrame({
+    "Wall": [result['surrounding_areas']['Wall'] * absorption_coefficients["Wall"] for result in results],
+    "Window": [result['surrounding_areas']['Window'] * absorption_coefficients["Window"] for result in results],
+    "Beam": [result['surrounding_areas']['Beam'] * absorption_coefficients["Beam"] for result in results],
+    "Ceiling": [result['surrounding_areas']['Ceiling'] * absorption_coefficients["Ceiling"] for result in results],
+    "Floor": [result['surrounding_areas']['Floor'] * absorption_coefficients["Floor"] for result in results],
+}).T  # Transpose for proper orientation
+
+# Optional: Replace NaN with 0 if any
+absorption_area_data = absorption_area_data.fillna(0)
+
+# Create heatmap with matplotlib
+plt.figure(figsize=(12, 6))
+im = plt.imshow(absorption_area_data, cmap="YlGnBu", aspect="auto")
+
+# Add colorbar with appropriate label
+cbar = plt.colorbar(im)
+cbar.set_label("Absorption Area (m² × Coefficient)", fontsize=12)
+
+# Set x-axis labels as Room Names or Indices
+plt.xticks(range(len(results)), labels=[f"Room {i+1}" for i in range(len(results))], rotation=45, ha='right')
+
+# Set y-axis labels as Surface Types
+plt.yticks(range(len(absorption_area_data.index)), labels=absorption_area_data.index)
+
+# Add title and labels
+plt.title("Absorption Areas by Surface Type and Room", fontsize=14)
+plt.xlabel("Room Index", fontsize=12)
+plt.ylabel("Surface Type", fontsize=12)
+
+# Enhance layout
+plt.tight_layout()
+
+#display the heatmap
+plt.show()
+```
+### 26. 3D-scatterplot
+A 3D-scatterplot of floor area, volume and reverberation type.
+```
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
+
+# Scatterplot in 3D
+ax.scatter(floor_areas, volumes, reverberation_times, c='purple', alpha=0.7, s=50, edgecolors='w')
+
+ax.set_xlabel('Floor Area (m²)', fontsize=12)
+ax.set_ylabel('Volume (m³)', fontsize=12)
+ax.set_zlabel('Reverberation Time (s)', fontsize=12)
+ax.set_title('3D Scatter: Floor Area, Volume, and Reverberation Time', fontsize=14)
+
+plt.tight_layout()
+plt.show()
+```
+### 27. Bar chart categorize
+A bar chart categorized by floor area and showcasing average absorption coefficient.
+```
+# Categorize rooms by size
+categories = ["<50 m²", "50-100 m²", ">100 m²"]
+category_times = {
+    "<50 m²": [time for area, time in zip(floor_areas, reverberation_times) if area < 50],
+    "50-100 m²": [time for area, time in zip(floor_areas, reverberation_times) if 50 <= area <= 100],
+    ">100 m²": [time for area, time in zip(floor_areas, reverberation_times) if area > 100],
+}
+
+# Calculate average reverberation times per category
+avg_times = [np.mean(category_times[cat]) if category_times[cat] else 0 for cat in categories]
+
+# Create bar chart
+plt.figure(figsize=(8, 5))
+bars = plt.bar(categories, avg_times, color=['green', 'blue', 'red'], alpha=0.7)
+
+# Set labels and title
+plt.xlabel('Room Size Category', fontsize=12)
+plt.ylabel('Average Reverberation Time (s)', fontsize=12)
+plt.title('Average Reverberation Time by Room Size Category', fontsize=14)
+
+# Add average value labels inside the bars
+for bar in bars:
+    height = bar.get_height()
+    plt.text(
+        bar.get_x() + bar.get_width() / 2,  # X-coordinate: center of the bar
+        height / 2,                          # Y-coordinate: halfway up the bar
+        f'{height:.2f}',                     # Text to display (formatted to 2 decimal places)
+        ha='center',                         # Horizontal alignment
+        va='center',                         # Vertical alignment
+        fontsize=14,                         # Font size
+        fontweight='bold',                   # Bold text
+        color='white'                        # Text color for contrast
+    )
+
+# Improve layout and display the plot
+plt.tight_layout()
+plt.show()
 
 ```
+### 28. Outlier scatterplot
+This plot highlights the outliers in reverberation time vs. floor area and might be relevant in some projects.
+```
+#Identify outliers
+threshold = 1.0  # Example threshold for reverberation time
+outliers = [(area, time) for area, time in zip(floor_areas, reverberation_times) if time > threshold]
 
+plt.figure(figsize=(10, 6))
+plt.scatter(floor_areas, reverberation_times, c='blue', alpha=0.7, edgecolors='w', s=50)
+for area, time in outliers:
+    plt.annotate(f"Outlier ({area:.1f}, {time:.2f})", (area, time), fontsize=8, color='red')
+
+plt.xlabel('Floor Area (m²)', fontsize=12)
+plt.ylabel('Reverberation Time (s)', fontsize=12)
+plt.title('Reverberation Time vs. Floor Area (Outliers Highlighted)', fontsize=14)
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.tight_layout()
+plt.show()
 ```
 
-```
 
-```
-
-```
-
-```
-
-```
-
-```
-
-```
 
