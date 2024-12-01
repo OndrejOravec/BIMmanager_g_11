@@ -27,7 +27,7 @@ from scipy.spatial import ConvexHull
 from matplotlib.patches import Polygon
 
 # Define the save directory
-save_directory = r"C:\Users\magnu\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\Vizual\Floor_Plans"
+save_directory = r"C:\Users\Magnus\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\Vizual\Floor_Plans"
 
 # Ensure the directory exists
 os.makedirs(save_directory, exist_ok=True)
@@ -89,7 +89,7 @@ def load_ifc_with_progress(file_path):
     return ifc_model
 
 # Defining model path
-file_path = r"C:\Users\magnu\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\IFC_Models\CES_BLD_24_06_ARC.IFC"
+file_path = r"C:\Users\Magnus\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\IFC_Models\CES_BLD_24_06_ARC.IFC"
 ifc_model = load_ifc_with_progress(file_path)
 
 
@@ -396,7 +396,7 @@ def classify_surrounding_surfaces(surface, vertical_distance, nearby_elements):
 
                             # Classify the face based on the element type and adjust its area.
                             if element_type == "Wall":
-                                if "Ect. Wall - 352mm" in obj_name:
+                                if "Ext. Wall - 352mm" in obj_name:
                                     # Calculate reduced area for specific wall types.
                                     a = obj_max_coords[0] - obj_min_coords[0]  # Length along X-axis.
                                     b = obj_max_coords[2] - obj_min_coords[2]  # Height along Z-axis.
@@ -499,7 +499,7 @@ def analyze_all_floor_arc_surfaces(ifc_model):
     for obj in ifc_model.by_type('IfcProduct'):
         obj_name = obj.Name or ""  # Get the object's name.
         # Determine the element type based on its name.
-        if "Interior wall - Wood" in obj_name or "Ext. Wall" in obj_name or "Ect. Wall - 352mm" in obj_name:
+        if "Interior wall - Wood" in obj_name or "Ext. Wall" in obj_name or "Ext. Wall - 352mm" in obj_name:
             element_type = "Wall"
         elif any(keyword in obj_name for keyword in ["Panel", "Glazed", "glass"]):
             element_type = "Window"
