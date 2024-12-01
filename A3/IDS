@@ -111,7 +111,7 @@
                         <xs:restriction base="xs:string">
                             <xs:pattern value=".*(Glazed|glass).*"/>
                         </xs:restriction>
-                    <ids:value>
+                    </ids:value>
                 </ids:attribute>
                 <ids:property>
                     <ids:propertySet>
