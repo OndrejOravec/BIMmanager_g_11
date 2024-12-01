@@ -1,4 +1,4 @@
-This document serves as Assignment A2: Use Case. We are submitting it alongside the A3 assignment to address missing information that could not be updated earlier since we as managers, we decided to develop our own tool after the  A2 submission.
+This document serves as Assignment A2: Use Case. We are submitting it alongside the A3 assignment to address missing information that could not be updated earlier since we as managers, decided to develop our own tool after the  A2 submission.
 
 ---
 <details>
