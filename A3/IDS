@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ids:ids xmlns:ids="http://standards.buildingsmart.org/IDS" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://standards.buildingsmart.org/IDS http://standards.buildingsmart.org/IDS/1.0/ids.xsd">
+    <ids:info>
+        <ids:title>Reverberation Analysis Specification</ids:title>
+        <ids:description>This IDS defines the requirements for analyzing reverberation times and related metrics using IFC models.</ids:description>
+        <ids:version>1.1</ids:version>
+        <ids:date>2024-01-01</ids:date>
+    </ids:info>
+    <ids:specifications>
+        <!-- Floor Specification -->
+        <ids:specification name="Floor Specification" ifcVersion="IFC4" description="Specifications for analyzing floors in reverberation analysis.">
+            <ids:applicability>
+                <ids:entity>
+                    <ids:name>
+                        <ids:simpleValue>IfcSlab</ids:simpleValue>
+                    </ids:name>
+                </ids:entity>
+            </ids:applicability>
+            <ids:requirements>
+                <ids:property>
+                    <ids:propertySet>
+                        <ids:simpleValue>Qto_SpaceBaseQuantities</ids:simpleValue>
+                    </ids:propertySet>
+                    <ids:baseName>
+                        <ids:simpleValue>NetFloorArea</ids:simpleValue>
+                    </ids:baseName>
+                    <ids:value>
+                        <xs:restriction base="xs:double">
+                            <xs:minInclusive value="15.0"/>
+                            <xs:maxInclusive value="150.0"/>
+                        </xs:restriction>
+                    </ids:value>
+                </ids:property>
+            </ids:requirements>
+        </ids:specification>
+
+        <!-- Wall Specification -->
+        <ids:specification name="Wall Specification" ifcVersion="IFC4" description="Specifications for analyzing walls in reverberation analysis.">
+            <ids:applicability>
+                <ids:entity>
+                    <ids:name>
+                        <ids:simpleValue>IfcWall</ids:simpleValue>
+                    </ids:name>
+                </ids:entity>
+            </ids:applicability>
+            <ids:requirements>
+                <ids:attribute>
+                    <ids:name>
+                        <ids:simpleValue>Name</ids:simpleValue>
+                    </ids:name>
+                </ids:attribute>
+            </ids:requirements>
+        </ids:specification>
+
+        <!-- Window Specification -->
+        <ids:specification name="Window Specification" ifcVersion="IFC4" description="Specifications for analyzing windows in reverberation analysis.">
+            <ids:applicability>
+                <ids:entity>
+                    <ids:name>
+                        <ids:simpleValue>IfcWindow</ids:simpleValue>
+                    </ids:name>
+                </ids:entity>
+            </ids:applicability>
+            <ids:requirements>
+                <ids:attribute>
+                    <ids:name>
+                        <ids:simpleValue>Name</ids:simpleValue>
+                    </ids:name>
+                    <ids:value>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value=".*(Glazed|glass).*"/>
+                        </xs:restriction>
+                    </ids:value>
+                </ids:attribute>
+            </ids:requirements>
+        </ids:specification>
+
+        <!-- Beam Specification -->
+        <ids:specification name="Beam Specification" ifcVersion="IFC4" description="Specifications for analyzing beams in reverberation analysis.">
+            <ids:applicability>
+                <ids:entity>
+                    <ids:name>
+                        <ids:simpleValue>IfcMember</ids:simpleValue>
+                    </ids:name>
+                </ids:entity>
+            </ids:applicability>
+            <ids:requirements>
+                <ids:attribute>
+                    <ids:name>
+                        <ids:simpleValue>Name</ids:simpleValue>
+                    </ids:name>
+                </ids:attribute>
+            </ids:requirements>
+        </ids:specification>
+
+        <!-- Curtain Wall Specification -->
+        <ids:specification name="Curtain Wall Specification" ifcVersion="IFC4" description="Specifications for analyzing curtain walls in reverberation analysis.">
+            <ids:applicability>
+                <ids:entity>
+                    <ids:name>
+                        <ids:simpleValue>IfcCurtainWall</ids:simpleValue>
+                    </ids:name>
+                </ids:entity>
+            </ids:applicability>
+            <ids:requirements>
+                <ids:attribute>
+                    <ids:name>
+                        <ids:simpleValue>Name</ids:simpleValue>
+                    </ids:name>
+                </ids:attribute>
+                <ids:property>
+                    <ids:propertySet>
+                        <ids:simpleValue>Pset_CurtainWallCommon</ids:simpleValue>
+                    </ids:propertySet>
+                    <ids:baseName>
+                        <ids:simpleValue>IsExternal</ids:simpleValue>
+                    </ids:baseName>
+                </ids:property>
+            </ids:requirements>
+        </ids:specification>
+    </ids:specifications>
+</ids:ids>
