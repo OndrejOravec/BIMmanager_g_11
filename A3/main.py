@@ -2,6 +2,16 @@
 # This script analyzes floor surfaces in an IFC model, calculating reverberation times and visualizing results.
 # Key steps include loading an IFC file, identifying relevant surfaces, and performing various geometric and acoustic calculations.
 
+#Important - must run these commands before running the script
+"""
+pip install tqdm
+pip install ifcopenshell
+pip install numpy
+pip install pandas
+pip install matplotlib
+
+"""
+
 import ifcopenshell
 import ifcopenshell.geom
 import math
@@ -11,11 +21,77 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches  # For legend patches
 import pandas as pd  # To create and manage data tables
 from mpl_toolkits.mplot3d import Axes3D  # For 3D plotting
+import time
+from tqdm import tqdm
+from scipy.spatial import ConvexHull
+from matplotlib.patches import Polygon
+
+# Define the save directory
+save_directory = r"C:\Users\magnu\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\Vizual\Floor_Plans"
+
+# Ensure the directory exists
+os.makedirs(save_directory, exist_ok=True)
+
+print(f"Save directory is set to: {save_directory}")
+
+
 
 # -------------------- Load the IFC Model --------------------
 # Specify the path to the IFC file (update the path if needed).
-file_path = r"C:\Users\Magnus\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\IFC_Models\CES_BLD_24_06_ARC.IFC"
-ifc_model = ifcopenshell.open(file_path)  # Load the IFC model.
+print("WELCOME")
+print("THIS SCRIPT WILL LOAD AN ARCHITECTURAL IFC MODEL AND DETECT MEDIUM SIZED ROOMS SUCH AS OFFICES")
+print("IT WILL THEN FIND: FLOOR AREA, HEIGHT, VOLUME, AVERAGE ABSORPTION AREA AND REVERBERATION TIME")
+print("THIS WILL GIVE AN IDEA OF THE ACOUSTIC COMPETENCES OF EACH ROOM")
+print("RECOMMENDED REVERBERATION TIME FOR CLASSROOMS AND SMALL OFFICES IS 0.4-0.6 SECONDS WHILE LARGER ROOMS AND OFFICES CAN GO UP TO 1-1.1 SECONDS")
+print("LASTLY THE VISUALISATIONS OF THE RESULTS WILL BE DISPLAYED")
+print("-----------------------------------------------------------")
+print("THE SCRIPT WILL TAKE A COUPLE MINUTES TO LOAD THE MODEL AND FIND APPROPRIATE ROOMS")
+print("LET'S BEGIN")
+# Countdown before assigning the file path
+print("Starting in...")
+for i in range(5, 0, -1):  # Countdown from 5 to 1
+    print(f"{i} seconds remaining...")
+    time.sleep(1)  # Wait for 1 second
+print("Loading Architectural model...")
+# Simulated Loading Bar Function
+
+def load_ifc_with_progress(file_path):
+    """
+    Simulate a progress bar during IFC file loading and related tasks.
+
+    Parameters:
+    - file_path (str): Path to the IFC file.
+
+    Returns:
+    - ifc_model: The loaded IFC model.
+    """
+    total_steps = 100
+    progress = 0
+    with tqdm(total=total_steps, bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt}%", colour="green") as pbar:
+        # Simulate pre-loading (cosmetic only)
+        for _ in range(30):
+            time.sleep(0.05)  # Fast cosmetic delay
+            pbar.update(1)
+            progress += 1
+
+        # Actual model loading (real time)
+        ifc_model = ifcopenshell.open(file_path)
+        pbar.update(50)  # Simulate jumping to 80% after loading
+        progress += 50
+
+        # Simulate post-loading tasks (e.g., processing geometry)
+        for _ in range(20):
+            time.sleep(0.05)  # Fast cosmetic delay
+            pbar.update(1)
+            progress += 1
+
+    print("Model successfully loaded and ready for analysis!")
+    return ifc_model
+
+# Defining model path
+file_path = r"C:\Users\magnu\OneDrive - Danmarks Tekniske Universitet\DTU\Kandidat\Tredje semester\41934 Advanced Building Information Modeling\IFC_Models\CES_BLD_24_06_ARC.IFC"
+ifc_model = load_ifc_with_progress(file_path)
+
 
 # -------------------- Geometry Settings --------------------
 # Set global geometry processing options for creating and analyzing 3D shapes.
@@ -24,7 +100,6 @@ settings.set(settings.USE_WORLD_COORDS, True)  # Use world coordinates for all g
 
 # -------------------- Helper Functions --------------------
 # The following functions perform calculations for geometry, areas, distances, and classification.
-
 def reduction_factor(a, b, t=352):
     """
     Calculate the reduction factor for a rectangular shape. 
@@ -150,14 +225,15 @@ def measure_vertical_distances_to_ifccovering(surface, coverings):
     - coverings: A list of covering objects, each with pre-calculated bounding boxes (min_coords, max_coords).
 
     Returns:
-    - list: A list of vertical distances (float) from the surface's sample points to the nearest coverings.
-        - If no covering is above a point, the distance is set to None.
+    - float or None: The determined height (in meters), or None if the floor should be filtered out.
     """
-    points = get_sample_points(surface)  # Get center point of the surface.
+    points = get_sample_points(surface)  # Get multiple points on the surface.
     if not points:
-        return []  # Return an empty list if there are no valid sample points.
+        print("No valid points found for surface.")
+        return None  # Return None if there are no valid sample points.
 
-    distances = []  # Initialize list to store distances.
+    valid_heights = []  # List to store valid heights.
+
     for point in points:
         closest_distance = float('inf')  # Initialize closest distance to a very large number.
         point_xy = point[:2]  # Use only the X and Y coordinates for horizontal alignment.
@@ -176,9 +252,28 @@ def measure_vertical_distances_to_ifccovering(surface, coverings):
                     if distance < closest_distance:
                         closest_distance = distance  # Update the closest distance.
 
-        distances.append(closest_distance if closest_distance != float('inf') else None)
+        # Store the closest valid distance for this point.
+        if closest_distance != float('inf'):
+            valid_heights.append(closest_distance)
 
-    return distances  # Return the list of distances.
+    # Apply filtering logic
+    if not valid_heights or any(h > 4 or h < 2 for h in valid_heights):
+        print(f"Surface filtered out due to invalid height(s): {valid_heights}")
+        return None  # Filter out the floor if any height is invalid.
+
+    # Replace 2.5 m with 3 m (correction step)
+    corrected_heights = [3.0 if h == 2.5 else h for h in valid_heights]
+
+    # Determine the final height
+    if any(h == 3 for h in corrected_heights):
+        return 3.0  # Use 3 m if any point measures exactly 3 m.
+    else:
+        average_height = sum(corrected_heights) / len(corrected_heights)  # Calculate average height.
+        print(f"Average height for surface after correction: {average_height:.2f} m")
+        return average_height  # Return the average height.
+
+
+
 
 def is_rectangular(surface, tolerance=0.05):
     """
@@ -426,6 +521,7 @@ def analyze_all_floor_arc_surfaces(ifc_model):
         })
 
     # Step 3: Process each floor surface in the model.
+    print("Filtering rooms...")
     for surface in ifc_model.by_type("IfcSlab"):
         if "Floor:ARC - Wood flooring" in (surface.Name or ""):
             # Calculate the top surface area of the floor.
@@ -457,17 +553,19 @@ def analyze_all_floor_arc_surfaces(ifc_model):
                     max_c[1] >= floor_min_coords[1] and min_c[1] <= floor_max_coords[1]):
                     filtered_coverings.append(covering)
 
-            distances = measure_vertical_distances_to_ifccovering(surface, filtered_coverings)
-            if any(distance is not None and distance > 3.1 for distance in distances):
-                actual_distance = max([d for d in distances if d is not None], default=0)
-                print(f"{surface.Name} filtered out due to exceeding ceiling distance (Actual height: {actual_distance:.2f} m).")
-                continue
+            # Measure the height using the updated function
+            vertical_distance = measure_vertical_distances_to_ifccovering(surface, filtered_coverings)
 
-            valid_distances = [d for d in distances if d is not None]
-            if not valid_distances:
+            # Check if the height is valid (not None)
+            if vertical_distance is None:
                 print(f"Cannot proceed without a valid ceiling height for {surface.Name}.")
                 continue
-            vertical_distance = sum(valid_distances) / len(valid_distances)
+
+            # Check if the height exceeds 3.1 m (filter condition)
+            if vertical_distance > 3.1:
+                print(f"{surface.Name} filtered out due to exceeding ceiling distance (Actual height: {vertical_distance:.2f} m).")
+                continue
+
 
             # Step 5: Classify surrounding surfaces and calculate areas.
             margin = 0.5  # Extend analysis area by 0.5 meters around the floor.
@@ -539,6 +637,7 @@ for result in results:
     else:
         print(f"    Reverberation Time: Cannot be calculated (average absorption coefficient is zero)")
   
+
 # -------------------- Visualization Section --------------------
 
 
@@ -770,9 +869,6 @@ plt.title("Absorption Areas by Surface Type and Room", fontsize=14)
 plt.xlabel("Room Index", fontsize=12)
 plt.ylabel("Surface Type", fontsize=12)
 
-# Enhance layout
-plt.tight_layout()
-
 #display the heatmap
 plt.show()
 
@@ -828,19 +924,3 @@ for bar in bars:
 plt.tight_layout()
 plt.show()
 
-
-# Identify outliers
-threshold = 1.0  # Example threshold for reverberation time
-outliers = [(area, time) for area, time in zip(floor_areas, reverberation_times) if time > threshold]
-
-plt.figure(figsize=(10, 6))
-plt.scatter(floor_areas, reverberation_times, c='blue', alpha=0.7, edgecolors='w', s=50)
-for area, time in outliers:
-    plt.annotate(f"Outlier ({area:.1f}, {time:.2f})", (area, time), fontsize=8, color='red')
-
-plt.xlabel('Floor Area (m²)', fontsize=12)
-plt.ylabel('Reverberation Time (s)', fontsize=12)
-plt.title('Reverberation Time vs. Floor Area (Outliers Highlighted)', fontsize=14)
-plt.grid(True, linestyle='--', alpha=0.5)
-plt.tight_layout()
-plt.show()

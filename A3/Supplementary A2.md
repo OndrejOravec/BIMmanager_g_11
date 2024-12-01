@@ -1,83 +1,71 @@
 This document serves as Assignment A2: Use Case. We are submitting it alongside the A3 assignment to address missing information that could not be updated earlier since we as managers, decided to develop our own tool after the  A2 submission.
 
----
-<details>
-  <summary>A2b. Identify claim</summary>
+This document serves as Assignment A2: Use Case. It is being submitted alongside the A3 assignment to address missing information that could not be updated earlier. As managers, we decided to develop our own tool after the A2 submission.
 
-  - **Claim:** To verify if  Reverberation Time T of different rooms comply with acoustic recommendations.
-  - **Report Reference:** "CES_BLD_24_0_6_MEP" (p. 21)
-  - **Description of claim we wish to check** The idea is to develop a tool to verify if the acoustic environment of different kinds of rooms (meeting rooms, small offices) comply with acoustic criteria for Reverberation Time T.
-  - **Justification of selection of our claim** Reverberation Time T is a key parameter in room acoustics, playing a crucial role in creating a suitable indoor environment within buildings.
+## A2b. Identify Claim
 
-</details>
+  - **Claim:**  
+    To verify if the Reverberation Time (T) of different rooms complies with acoustic recommendations.
 
----
-<details>
-  <summary>A2c. Use Case</summary>
+  - **Report Reference:**  
+    "CES_BLD_24_0_6_MEP" (p. 21)
 
-  - **How and when we check this claim?** This would be done by extracting rom volumes V and different surface areas S with their corresponding absorption coefficient α of specific rooms and performing Reverberation calculation T using Sabine equation, consequently it would be compared with Reverberation Time recommendations for meeting rooms and offices.
-  - **What information does this claim rely on?** It depends on the accurate extraction of room volumes and their boundaries, such as walls and ceilings. Additionally, distinguishing between walls with different finishing layers is crucial, as they have varying sound absorption coefficients that directly impact the calculation of Reverberation Time.
-  - **What BIM purpose is required?** All 5 BIM purposes will be included (Gather, Generate, Analyse, Communicate, Realize).
+  - **Description of the Claim:**  
+    The idea is to develop a tool to verify whether the acoustic environment of different kinds of rooms (e.g., meeting rooms, small offices) complies with acoustic criteria for Reverberation Time (T).
 
-  - **BPMN drawing:**   
-  1. Loading of model.
-  2. Extraction of data 
-  3. Adding missing infromation required to carry out calculation. In this case we dont expect sound absorption coefficient of finishing layer will be defined in model, therefore it will be chosen manually according finishing layer.
-  4. Calculation is carried out.
-  5. Generation of result and subsequent comparison with acoustic recommendation.
+  - **Justification for Selecting this Claim:**  
+    Reverberation Time (T) is a key parameter in room acoustics, playing a crucial role in creating a suitable indoor environment within buildings.
 
+## A2c. Use Case
 
-  </details>
+  - **How and When We Check this Claim:**  
+    By extracting room volumes (V) and surface areas (S) with their corresponding absorption coefficients (α) for specific rooms, and performing Reverberation Time (T) calculations using Sabine's equation. The results will be compared with acoustic recommendations for meeting rooms and offices.
 
----
-<details>
-  <summary>A2d. Scope the Use Case</summary>
+  - **Information the Claim Relies On:**  
+    Accurate extraction of room volumes and their boundaries (e.g., walls and ceilings). Differentiating between walls with different finishing layers is crucial since they have varying sound absorption coefficients, directly impacting Reverberation Time calculations.
 
-  - **Identify where a new script/fucntion/tool is needed and highlight this in BPMN diagram** 
+  - **BIM Purpose Required:**  
+    All five BIM purposes will be included: Gather, Generate, Analyse, Communicate, and Realize.
 
- 1. In first step a script or tool is required to systamize the extraction of ventilation components. This will access and list the required data from the model effectively.
- 2. A function is needed here to compare the extracted data from the IFC-model with the MEP-report. The function would guarantee that quantities, dimensions and flow rates match the specifications for design and regulations.
- 3. A sript would also include calculations for airflow based on the size of the room and the amount of occupants, which could be incorporated into the validation tool or done separately.
+  - **BPMN Drawing:**  
+    1. Load the model.  
+    2. Identify room boundaries.  
+    3. Calculate areas.  
+    4. Identify sound absorption coefficients.  
+    5. Determine the analysis range.  
+    6. Generate results and compare them with acoustic recommendations.
 
+## A2d. Scope the Use Case
 
+  - **Identify the Need for a New Script/Function/Tool:**  
+    Our script is mainly required in the "Room boundaries definition" part since the provided IFC model does not have room boundaries defined via the corresponding function in the specific BIM software where the model was created.  
 
-  </details>
+    Additionally, the script provides a tool to determine the absorption coefficients of different surfaces if the sound absorption coefficients are not defined in the IFC model.  
 
----
-<details>
-  <summary>A2e. Tool Idea</summary>
+    Furthermore, the script filters and considers only specific (regular) room shapes, as Sabine's formula for reverberation time calculations is applicable to regular room shapes.
 
-  - **Describe idea of your OpenBIM ifcOpenShell Tool**   Tool serves for fast extraction and assesment of Reverberation Time to enchance inter-disciplinary workflow between proffesions throughout different stages of project planning.
+## A2e. Tool Idea
 
-  - **Business and Societal value:** It has a value in preventing bad acoustic indoor environment. There is a evidence how bad acoustic environment can have adverse effect on human health and work productivity.
+  - **Description of the OpenBIM ifcOpenShell Tool:**  
+    The tool enables fast extraction and assessment of Reverberation Time, enhancing interdisciplinary workflows among professionals at different stages of project planning.
 
-  - **Summarizing BPMN diagram:**  Diagram demonstrates representation of workflow of our script. From extraction of data, assesment, subsequent calculation and evaluation in relation to standart recommendations.
+  - **Business and Societal Value:**  
+    This tool helps prevent poor acoustic indoor environments. Evidence suggests that a bad acoustic environment can have adverse effects on human health and work productivity.
 
- 
-  </details>
+  - **Summary of BPMN Diagram:**  
+    The diagram represents the workflow of our script, covering data extraction, assessment, subsequent calculations, and evaluation against standard recommendations.
 
----
-<details>
-  <summary>A2f. Information requirements</summary>
- 
- - **Identification of required information from model**  
- 
- Walls 
- 
- Ceilings
- 
- CurtainWalls
- 
- Windows
- 
- Floors
+## A2f. Information Requirements
 
-  </details>
+  - **Required Information from the Model:**  
+    - Walls  
+    - Ceilings  
+    - Curtain Walls  
+    - Windows  
+    - Floors
 
----
-<details>
-  <summary>A2g. Identify appropriate software licence</summary>
+## A2g. Identify Appropriate Software License
 
-  </details>
+  - **Software License:**  
+    No license needed as the 3D-modelling program used "Blender" is open-software and all the coding has been done in VSCode using Python which is also open-software.
 
----
