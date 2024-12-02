@@ -10,7 +10,7 @@ Since OpenBIM is collaborative approach to BIM that emphasizes interoperability 
 
 Moreover, considering rapid digitalization trends withing construction industry over past years, it seem more likely that I will utilize in someway OpenBIM tools within next 10 years. So yes, I see it very likely I will come acroos situation within next 10 years where I will be working with OpenBIM tools.  
 
-- *Are you likely to use OpenBIM tools in your thesis?-*
+- *Are you likely to use OpenBIM tools in your thesis?:*
 
 Regarding me thesis, Iam already working on my thesis this semester and I havent planned to use any OpenBIM tools. However, Iam still glad that project Magnus and I carried out was related to acoustics which is same topic as my MSc thesis is about, therfore giving me broader knowledge about possibilties of architectural acoustics design.
 
@@ -40,3 +40,12 @@ With all these precautions in place and the IDS defined, I see great potential f
 *Handling more complex geometries :* There are forms of Reverberation formula which are not based on assumption of parralelly oriented walls in cuboid shape rooms, therfore it would be possible make script less constraining and give user more freedom.
 
 In general I enjoyed this course, even though during first half I felt Iam not contributing as much as I wanted. I appreciate possiblity of developing own script even though we decided to do so in later stage of course.
+
+
+# Magnus Individual Reflection
+**My future for Advanced use of OpenBIM:**
+- *Are you likely to use OpenBIM tools in your professsional life in the next 10 years?:*
+
+- *Are you likely to use OpenBIM tools in your thesis?:*
+
+**Wrap up:**
