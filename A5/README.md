@@ -1,7 +1,7 @@
 This file contains individual reflections for assignment A5 of both members of BIM manager group 11. 
 
 # Ondrej Individual Reflection
-**My future for Advanced use of OpenBIM:**
+### My future for Advanced use of OpenBIM:
 - *Are you likely to use OpenBIM tools in your professsional life in the next 10 years?:*
 
 I see a lot of potential for using OpenBIM in my future career in architectural acoustics, rimarily because the nature of this field relies heavily on interdisciplinary collaboration with various professionals within consultancy and effective communication with diverse stakeholders in the construction industry.
@@ -12,11 +12,11 @@ Moreover, considering rapid digitalization trends withing construction industry 
 
 - *Are you likely to use OpenBIM tools in your thesis?:*
 
-Regarding me thesis, Iam already working on my thesis this semester and I havent planned to use any OpenBIM tools. However, Iam still glad that project Magnus and I carried out was related to acoustics which is same topic as my MSc thesis is about, therfore giving me broader knowledge about possibilties of architectural acoustics design.
+Regarding my thesis, I am already working on my thesis this semester and I havent planned to use any OpenBIM tools. However, Iam still glad that project Magnus and I carried out was related to acoustics which is same topic as my MSc thesis is about, therfore giving me broader knowledge about possibilties of architectural acoustics design.
 
-**Wrap up:**
+### Wrap up:
 
-Thorughout first half of course Magnus and I been more engaged in managerial position, where even though we were in touch with our analaysts and were engaged in their process of design we felt like hanging in air and depended on their otucome or in other words, not contributive as much as we wanted to general development of different tools for Indoor Climate domain. 
+Throughout first half of course Magnus and I been more engaged in managerial position, where even though we were in touch with our analaysts and were engaged in their process of design we felt like hanging in air and depended on their otucome or in other words, not contributive as much as we wanted to general development of different tools for Indoor Climate domain. 
 Speaking for myself, even though I had some ideas which way to go, I felt I couldnt utilize/ develope them further since I didnt want to be in posistion to tell analysts which way to develop code which they were working most on. 
 Also another reason why I felt bit left out was probably that analysts didnt feel need to consult with us much their ideas and general approaches.
 
@@ -43,7 +43,7 @@ In general I enjoyed this course, even though during first half I felt Iam not c
 
 
 # Magnus Individual Reflection
-**My future for Advanced use of OpenBIM:**
+### My future for Advanced use of OpenBIM:
 - *Are you likely to use OpenBIM tools in your professsional life in the next 10 years?:*
 
 Yes, absolutely. OpenBIM tools encompass some of the aspects of architectural engineering that I enjoy the most, especially their versatility across various topics. My first introduction to tools like Grasshopper and Rhino was during my bachelor’s fagprojekt (subject project), where I discovered my passion for parameterization. While it is complex, I find the idea of developing geometric scripts to aid the early design process fascinating. Such scripts can provide a rough, optimized geometry that architects can refine and build upon.
@@ -60,4 +60,26 @@ An idea I find particularly exciting involves a tool that allows designers to in
 
 To answer the question directly, working on something like this would be impossible without OpenBIM tools. Whether I pursue this exact idea or explore smaller-scale optimizations within another topic, OpenBIM will likely play a critical role in my thesis work.
 
-**Wrap up:**
+### Wrap up:
+#### Tool conclusion
+The idea for our tool originated from the case report *"CES_BLD_24_06_MEP"* ([view here](https://github.com/OndrejOravec/BIMmanager_g_11/blob/main/A3/CES_BLD_24_06_MEP.pdf)), which outlined the reverberation time for a single room. We wanted to verify this claim and, more importantly, make it possible to automatically verify reverberation times for all other rooms a user might be interested in. This concept is further detailed in our [Assignment 2 documentation](https://github.com/OndrejOravec/BIMmanager_g_11/blob/main/A3/Supplementary%20A2.md).  
+
+I found this project particularly engaging because of my interest in parametrization. I enjoy being able to quickly extract and evaluate room data, which is highly time-saving in large-scale designs compared to manually checking every room. The workflow we envisioned could also be expanded to include more comprehensive calculations and analyses with additional development time. Before scripting, we mapped out the workflow in a BPMN diagram to ensure a clear understanding of what we wanted to create. The diagram can be viewed [here](https://github.com/OndrejOravec/BIMmanager_g_11/blob/main/A3/BPMN%20diagram.svg).  
+
+Our final tool, available [here](https://github.com/OndrejOravec/BIMmanager_g_11/blob/main/A3/main.py), successfully calculates reverberation time and matches the results provided in the original report. However, it’s important to acknowledge some limitations. Currently, the user must specify how the script identifies specific objects by modifying lines 502, 504, and 506 in the main script. This adjustment is only necessary if the surrounding objects in the room have different annotations, and it’s a quick fix.  
+
+Another limitation is that the script hasn’t yet been able to consistently identify only the inward-facing surfaces of a room. To address this, we introduced adjustment factors that, while not perfectly precise, provide reasonably accurate results. These and other small limitations are elaborated on in the [Markdown Tutorial](https://github.com/OndrejOravec/BIMmanager_g_11/blob/main/A4/A4_Tutorial.md) and the accompanying [Video Tutorial](https://github.com/OndrejOravec/BIMmanager_g_11/blob/main/A4/Tutorial_Video_Link.txt).  
+
+Creating the tutorial provided a unique perspective for evaluating the tool and was a very rewarding process. It helped me gain a deeper understanding of the script and highlighted areas for improvement and further development—insights that would have been invaluable if the course extended for another semester, for example.  
+
+
+#### Course conclusion
+This course has truly been a rollercoaster. Initially, I was one of those who thought it would focus more on Revit, to be completely honest. However, I am very glad that it emphasized Blender and several other tools instead, as I believe this approach provides greater value.
+
+For a large part of the semester, Ondrej and I were managers for groups 14 and 15. Being in this role—especially with only two groups—was quite confusing. Both of us had ideas and were eager to start scripting and using Blender, but we couldn’t because of our managerial responsibilities, which was frustrating. I am very happy we spoke with Tim about this, and I really appreciated that he listened to us.
+
+In my experience, we truly shaped the course with our own hands. Transitioning from managers to analysts allowed us to develop our own tool, which was incredibly rewarding. Finally, we were able to unleash all our ideas and decided to focus on room detection and calculating reverberation time. This all happened within just a couple of weeks, so we had to work harder, but I found those hours far more enjoyable than the unproductive ones we spent as managers, unsure of what to do.
+
+While I’m grateful we could switch roles, I don’t think the course should include mandatory managerial positions. I understand the reasoning behind it, and I agree that the concept is important. However, it introduced a confusing element to the course, especially when there was already so much to learn. Personally, I would have gained more from analyzing and developing tools from the very beginning. Unfortunately, no one in our topic area wanted to be a manager, which is understandable. If I could make one suggestion for the next iteration of this course, it would be to eliminate the managerial roles altogether.
+
+That said, I feel I’ve learned a lot during this course. I had never tried being a manager before, but I had the opportunity to help our groups understand what to do, especially in the early stages. Even though we later transitioned back to developing our own tool, I would say I’ve grown from being an analyst and self-learner to also gaining experience as a BIM Manager.
