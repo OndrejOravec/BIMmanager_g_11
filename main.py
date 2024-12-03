@@ -499,7 +499,7 @@ def analyze_all_floor_arc_surfaces(ifc_model):
     for obj in ifc_model.by_type('IfcProduct'):
         obj_name = obj.Name or ""  # Get the object's name.
         # Determine the element type based on its name.
-        if "Interior wall - Wood" in obj_name or "Ext. Wall" in obj_name or "Ect. Wall - 352mm" in obj_name:
+        if "Interior wall - Wood" in obj_name or "Ext. Wall" in obj_name or "Ext. Wall - 352mm" in obj_name:
             element_type = "Wall"
         elif any(keyword in obj_name for keyword in ["Panel", "Glazed", "glass"]):
             element_type = "Window"
