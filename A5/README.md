@@ -46,7 +46,7 @@ In general I enjoyed this course, even though during first half I felt Iam not c
 ### My future for Advanced use of OpenBIM:
 - *Are you likely to use OpenBIM tools in your professsional life in the next 10 years?:*
 
-Yes, absolutely. OpenBIM tools encompass some of the aspects of architectural engineering that I enjoy the most, especially their versatility across various topics. My first introduction to tools like Grasshopper and Rhino was during my bachelor’s fagprojekt (subject project), where I discovered my passion for parameterization. While it is complex, I find the idea of developing geometric scripts to aid the early design process fascinating. Such scripts can provide a rough, optimized geometry that architects can refine and build upon.
+Yes, absolutely. OpenBIM tools encompass some of the aspects of architectural engineering that I enjoy the most, especially their versatility across various topics. My first introduction to tools like Grasshopper and Rhino was during my bachelor’s subject project (fagprojekt), where I discovered my passion for parameterization. While it is complex, I find the idea of developing geometric scripts to aid the early design process fascinating. Such scripts can provide a rough, optimized geometry that architects can refine and build upon.
 
 This approach means we wouldn’t need to start from scratch every time but rather work from a geometrically informed base evaluated against specific parameters. I believe this can significantly enhance the design process.
 
