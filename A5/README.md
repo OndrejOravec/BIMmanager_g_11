@@ -46,6 +46,18 @@ In general I enjoyed this course, even though during first half I felt Iam not c
 **My future for Advanced use of OpenBIM:**
 - *Are you likely to use OpenBIM tools in your professsional life in the next 10 years?:*
 
+Yes, absolutely. OpenBIM tools encompass some of the aspects of architectural engineering that I enjoy the most, especially their versatility across various topics. My first introduction to tools like Grasshopper and Rhino was during my bachelor’s fagprojekt (subject project), where I discovered my passion for parameterization. While it is complex, I find the idea of developing geometric scripts to aid the early design process fascinating. Such scripts can provide a rough, optimized geometry that architects can refine and build upon.
+
+This approach means we wouldn’t need to start from scratch every time but rather work from a geometrically informed base evaluated against specific parameters. I believe this can significantly enhance the design process.
+
+Even though I’m not the strongest coder, I’ve managed to make progress and improve my skills gradually. For instance, this semester marked my first experience with Blender, and I really appreciate its open-source nature. While Grasshopper requires a Rhino license, which can be a drawback, tools like Blender demonstrate the potential of accessible, powerful software. I’d be surprised if I didn’t incorporate OpenBIM in my future work.
+
 - *Are you likely to use OpenBIM tools in your thesis?:*
+
+I hope so, but it depends on the topic I choose and the supervisor I work with. I have broad interests, including acoustics, ventilation, and aspects of sustainability (although I find the process of conducting LCAs tedious, I enjoy the insights they provide). However, what truly fascinates me is optimizing the early design phase. Historically, buildings have often been designed without analytical tools until the later stages, but this is changing. We are beginning to integrate analysis into the modeling process, which I think is an incredible development. It enables us to create better buildings with more informed decisions from the outset.
+
+An idea I find particularly exciting involves a tool that allows designers to input project parameters—such as the number of rooms, building type, room types and sizes—and upload contextual data like surrounding buildings, trees, and the site’s layout. The tool could then generate hundreds of optimized building layouts with recommended room configurations, floorplans, and window placements. Designers could review the top 5–10 results and use them as inspiration or starting points for further refinement. While I’m not suggesting that architects are “guessing” during design, having this kind of engineering-guided framework early on could significantly improve the final outcome.
+
+To answer the question directly, working on something like this would be impossible without OpenBIM tools. Whether I pursue this exact idea or explore smaller-scale optimizations within another topic, OpenBIM will likely play a critical role in my thesis work.
 
 **Wrap up:**
