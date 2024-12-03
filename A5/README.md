@@ -13,6 +13,7 @@ Moreover, considering rapid digitalization trends withing construction industry 
 - *Are you likely to use OpenBIM tools in your thesis?:*
 
 Regarding my thesis, I am already working on my thesis this semester and I havent planned to use any OpenBIM tools. However, Iam still glad that project Magnus and I carried out was related to acoustics which is same topic as my MSc thesis is about, therfore giving me broader knowledge about possibilties of architectural acoustics design.
+However, I decided to use Python in my thesis, a choice I likely wouldn't have made if I hadn't taken this course, where I was introduced to Python for the first time during my MSc studies.
 
 ### Wrap up:
 
@@ -39,7 +40,12 @@ With all these precautions in place and the IDS defined, I see great potential f
 
 *Handling more complex geometries :* There are forms of Reverberation formula which are not based on assumption of parralelly oriented walls in cuboid shape rooms, therfore it would be possible make script less constraining and give user more freedom.
 
-In general I enjoyed this course, even though during first half I felt Iam not contributing as much as I wanted. I appreciate possiblity of developing own script even though we decided to do so in later stage of course.
+I would like to expand my knowledge of programming in general, as I now understand the cool possibilities that programming languages offer.
+
+#### Course conclusion
+In general I enjoyed this course, even though during first half I felt Iam not contributing as much as I wanted. I appreciate possiblity of developing own script even though we decided to do so in later stage of course. I appreciated the course dynamics, particularly the flexibility to choose our own path and develop personalized approaches to problem-solving. This was made possible through the variety of tools introduced to us by both lecturers and guest speakers.
+From my experience I would probably reshape managerial role in a way, I havent talked to managers from another groups, but as I mentioned above during first half of course while being  manager as course describes it, I felt I couldnt contribute as much as I wanted. I mean Iam not saying being manager doesnt allow to learn and develope any kind of skills, but from learning objective of course perspective, it doesnt give you as being manager as strong tools or possibilities to meet those learning objectives.
+My level at the beginning of course was basic as it gets, but now I would rank me somewhere between Self Learner and BIM Manager level. I can confidently say that taking this course was a decision I do not regret, and I would recommend it to others as well.
 
 
 # Magnus Individual Reflection
@@ -58,7 +64,7 @@ I hope so, but it depends on the topic I choose and the supervisor I work with. 
 
 An idea I find particularly exciting involves a tool that allows designers to input project parameters—such as the number of rooms, building type, room types and sizes—and upload contextual data like surrounding buildings, trees, and the site’s layout. The tool could then generate hundreds of optimized building layouts with recommended room configurations, floorplans, and window placements. Designers could review the top 5–10 results and use them as inspiration or starting points for further refinement. While I’m not suggesting that architects are “guessing” during design, having this kind of engineering-guided framework early on could significantly improve the final outcome.
 
-To answer the question directly, working on something like this would be impossible without OpenBIM tools. Whether I pursue this exact idea or explore smaller-scale optimizations within another topic, OpenBIM will likely play a critical role in my thesis work.
+To answer the question directly, working on something like this would be impossible without OpenBIM tools. Whether I pursue this exact idea or explore smaller-scale optimizations within another topic, OpenBIM will likely play a critical role in my thesis work. I mean Iam not saying being manager doesnt allow to learn and develope any kind of skills, but from learning objective of course perspective, it doesnt give you as being manager as strong tools or possibilities to meet those learning objectives.
 
 ### Wrap up:
 #### Tool conclusion
