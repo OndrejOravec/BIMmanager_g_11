@@ -44,7 +44,9 @@ I would like to expand my knowledge of programming in general, as I now understa
 
 #### Course conclusion
 In general I enjoyed this course, even though during first half I felt Iam not contributing as much as I wanted. I appreciate possiblity of developing own script even though we decided to do so in later stage of course. I appreciated the course dynamics, particularly the flexibility to choose our own path and develop personalized approaches to problem-solving. This was made possible through the variety of tools introduced to us by both lecturers and guest speakers.
+
 From my experience I would probably reshape managerial role in a way, I havent talked to managers from another groups, but as I mentioned above during first half of course while being  manager as course describes it, I felt I couldnt contribute as much as I wanted. I mean Iam not saying being manager doesnt allow to learn and develope any kind of skills, but from learning objective of course perspective, it doesnt give you as being manager as strong tools or possibilities to meet those learning objectives.
+
 My level at the beginning of course was basic as it gets, but now I would rank me somewhere between Self Learner and BIM Manager level. I can confidently say that taking this course was a decision I do not regret, and I would recommend it to others as well.
 
 
