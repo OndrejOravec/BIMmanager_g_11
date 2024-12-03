@@ -17,7 +17,7 @@ However, I decided to use Python in my thesis, a choice I likely wouldn't have m
 
 ### Wrap up:
 
-Throughout first half of course Magnus and I been more engaged in managerial position, where even though we were in touch with our analaysts and were engaged in their process of design we felt like hanging in air and depended on their otucome or in other words, not contributive as much as we wanted to general development of different tools for Indoor Climate domain. 
+Throughout the first half of the course Magnus and I been more engaged in managerial position, where even though we were in touch with our analaysts and were engaged in their process of design we felt like hanging in air and depended on their otucome or in other words, not contributive as much as we wanted to general development of different tools for Indoor Climate domain. 
 Speaking for myself, even though I had some ideas which way to go, I felt I couldnt utilize/ develope them further since I didnt want to be in posistion to tell analysts which way to develop code which they were working most on. 
 Also another reason why I felt bit left out was probably that analysts didnt feel need to consult with us much their ideas and general approaches.
 
