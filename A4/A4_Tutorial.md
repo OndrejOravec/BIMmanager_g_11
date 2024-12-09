@@ -4,7 +4,7 @@
 This script detects floor surfaces and surrounding surfaces to make up all rooms. Then it filters out irrelevant rooms and calculates reverberation time for the relevant rooms that are left. This gives an estimate of the acoustic competences of every room.
 
 ## Introduction to Tutorial
-Welcome! This repository contains a tutorial for using the **IFC Surface Analysis and Reverberation Calculation** script, which performs acoustic and geometric analyses on floor surfaces in an IFC model, specifically focusing on medium-sized rooms like offices. This script also generates visualizations of the results, helping you understand the acoustic properties of the modeled spaces. Let's walk through the process step-by-step.
+Welcome! This is a tutorial for using the **IFC Surface Analysis and Reverberation Calculation** script, which performs acoustic and geometric analyses on floor surfaces in an IFC model, specifically focusing on medium-sized rooms like offices. This script also generates visualizations of the results, helping you understand the acoustic properties of the modeled spaces. Let's walk through the process step-by-step.
 
 ## Target audience
 This script is intended primarily for OpenBIM Analysts Level 3, as it focuses on analyzing IFC models and evaluating room acoustics in a standalone python script. It is useful for beginners and experienced coders alike who need an efficient overview of room acoustics during the design phase.
@@ -551,7 +551,7 @@ def classify_surrounding_surfaces(surface, vertical_distance, nearby_elements):
 
                             # Classify the face based on the element type and adjust its area.
                             if element_type == "Wall":
-                                if "Ect. Wall - 352mm" in obj_name:
+                                if "Ext. Wall - 352mm" in obj_name:
                                     # Calculate reduced area for specific wall types.
                                     a = obj_max_coords[0] - obj_min_coords[0]  # Length along X-axis.
                                     b = obj_max_coords[2] - obj_min_coords[2]  # Height along Z-axis.
@@ -687,7 +687,7 @@ def analyze_all_floor_arc_surfaces(ifc_model):
     for obj in ifc_model.by_type('IfcProduct'):
         obj_name = obj.Name or ""  # Get the object's name.
         # Determine the element type based on its name.
-        if "Interior wall - Wood" in obj_name or "Ext. Wall" in obj_name or "Ect. Wall - 352mm" in obj_name:
+        if "Interior wall - Wood" in obj_name or "Ext. Wall" in obj_name or "Ext. Wall - 352mm" in obj_name:
             element_type = "Wall"
         elif any(keyword in obj_name for keyword in ["Panel", "Glazed", "glass"]):
             element_type = "Window"
